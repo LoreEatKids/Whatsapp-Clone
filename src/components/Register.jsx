@@ -51,7 +51,7 @@ export default function SignupForm() {
             getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
               try {
                 await updateProfile(res.user, {
-                  username,
+                  displayName: username,
                   photoURL: downloadURL
                 })
 
