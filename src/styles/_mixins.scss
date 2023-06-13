@@ -1,0 +1,89 @@
+@mixin prefix($prop, $value) {
+   -webkit-#{$prop}: #{$value};
+   -moz-#{$prop}: #{$value};
+   -ms-#{$prop}: #{$value};
+   -o-#{$prop}: #{$value};
+   #{$prop}: #{$value};
+}
+/* @include prefix(transform, scale3d(2.5, 2, 1.5));  */
+
+@mixin font-face($name, $file) {
+   @font-face {
+   font-family: "#{$name}";
+   src: url("../fonts/#{$file}.eot");
+   src: url("../fonts/#{$file}.eot?#iefix") format("embedded-opentype"),
+   url("../fonts/#{$file}.woff") format("woff"),
+   url("../fonts/#{$file}.ttf") format("truetype"),
+   url("../fonts/#{$file}.svg?#webfont") format("svg");
+ }
+}
+/* @include font-face("My Font", my-font); */
+
+@mixin abs-position ($top, $right, $bottom, $left) {
+   position: absolute; 
+   top: $top;
+   right: $right;
+   bottom: $bottom;
+   left: $left;
+}
+/* @include abs-position(100px, 100px, auto, auto); */
+
+@mixin breakpoint($point) {
+   @if $point == large {
+      @media only screen and (min-width: 1366px) {
+         @content;
+      }
+   } 
+   @else if $point == desktop {
+      @media only screen and (min-width: 1024px) {
+         @content;
+      }
+   } 
+   @else if $point == tablet {
+      @media only screen and (min-width: 600px) {
+         @content;
+      }
+   }
+}
+/*
+@include breakpoint(large) {
+   div {
+      font-size: 2rem;
+      line-height: 1.4;
+   }
+*/
+
+/* global mixings */
+@mixin full-screen {
+   width: 100vw;
+   height: 100vh;
+}
+
+@mixin vertical-align {
+   display: flex;
+   align-items: flex-start;
+   flex-direction: column;
+}
+
+@mixin bootstrap-btn {
+   color: #fff;
+   background-color: #007bff;
+   border-color: #007bff;
+   display: inline-block;
+   font-weight: 400;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   @include prefix(user-select, none);
+   border: 1px solid transparent;
+   border-top-color: transparent;
+   border-right-color: transparent;
+   border-bottom-color: transparent;
+   border-left-color: transparent;
+   padding: .375rem .75rem;
+   font-size: 1rem;
+   line-height: 1.5;
+   border-radius: .50rem;
+   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+   width: 100%;
+}

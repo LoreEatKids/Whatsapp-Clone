@@ -1,0 +1,36 @@
+@import "../../styles/main";
+
+aside {
+    background-color: $sidebar-background;
+    width: clamp(478px, 478px, 478px);
+
+    header {
+        padding: 8px 14px;
+        height: 60px;
+
+        .img-container {
+            flex: 1;
+            gap: 10px;
+            font-size: 14px;
+            * { color: $white; } 
+        }
+
+        button { border-bottom: 1px solid $white; }
+
+        svg, .img-container button { 
+            transition: opacity $basic-transition ease;
+            @include opacity-animation;
+         }
+
+        .links {
+            gap: 25px;
+            margin-right: 10px;
+        }
+    }
+
+    article {
+        background-color: $home-background;
+        color: $white;
+        max-width: 494px;
+    }
+}

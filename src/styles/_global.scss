@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.flex { display: flex; }
+.d-f { display: flex; align-items: center; }
+.d-c { justify-content: center; }
+.s-b { justify-content: space-between; }
+.d-n { display: none; }
+a {
+    text-decoration: none;
+    color: $white;
+}
+
+button, svg, input[type="file"] { cursor: pointer !important; } 
+svg { color: $sidebar-icons-color; }
+
+.pfp {
+    width: 40px; 
+    height: 40px; 
+    cursor: pointer; 
+    border-radius: 9999px;
+}

@@ -1,0 +1,30 @@
+@import "../../styles/main";
+
+.navbar {
+    height: 49px;
+    padding-left: 13px;
+
+    nav {
+        width: 426px;
+        height: 35px;
+        border-radius: 8px;
+        padding: 0 11px;
+        background-color: $sidebar-background;
+
+        input {
+            padding-left: 30px;
+            padding-right: 10px;
+            width: 100%;
+            color: $input-grey-color;
+            font-size: 14px;
+
+            &::placeholder {
+                font-size: 14px;
+            }
+        }
+    }
+    svg { 
+        opacity: .7; 
+        &.filter { margin-right: 9px; }
+    }
+}
