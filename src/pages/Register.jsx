@@ -45,7 +45,10 @@ export default function SignupForm() {
       const uploadTask = uploadBytesResumable(storageRef, image);
 
       uploadTask.on(
-        (err) => setErr(err),
+        (err) => {
+          setErr(err);
+          return;
+        },
         async () => {
           try {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
@@ -59,6 +62,7 @@ export default function SignupForm() {
               username,
               email,
               photoURL: downloadURL,
+              usernameToLowerCase: username.toLowerCase()
             });
 
             if(err === "") {

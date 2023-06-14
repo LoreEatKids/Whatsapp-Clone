@@ -3,6 +3,7 @@
 .navbar {
     height: 49px;
     padding-left: 13px;
+    position: relative;
 
     nav {
         width: 426px;
@@ -10,6 +11,8 @@
         border-radius: 8px;
         padding: 0 11px;
         background-color: $sidebar-background;
+
+        .input_container { width: 100%; }
 
         input {
             padding-left: 30px;

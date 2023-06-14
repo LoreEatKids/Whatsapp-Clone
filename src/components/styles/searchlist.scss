@@ -1,0 +1,13 @@
+@import "../../styles/main";
+
+main.searchlist {
+    display: none;
+    width: 100%;
+    position: absolute;
+    @include abs-position(50px, unset, unset, 0);
+    z-index: 9999;
+    height: $chat-container-width;
+    background-color: $home-background;
+}
+
+main.searchlist.active { display: block !important; }

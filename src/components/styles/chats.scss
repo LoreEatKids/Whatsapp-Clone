@@ -2,7 +2,7 @@
 
 .chats_container {
     padding: 20px 14px;
-    height: 85vh;
+    height: $chat-container-width;
 
     .chat {
         width: 100%;
