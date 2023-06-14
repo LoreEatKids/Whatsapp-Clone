@@ -7,9 +7,9 @@ import {
 } from "firebase/storage";
 import { useState } from 'react';
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, db, storage } from '../firebase';
-import "./styles/register.scss";
+import "../styles/register.scss";
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -40,42 +40,41 @@ export default function SignupForm() {
     e.preventDefault();
 
     try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredentials = await createUserWithEmailAndPassword( auth, email, password);
+      const storageRef = ref(storage, username);
+      const uploadTask = uploadBytesResumable(storageRef, image);
 
-        const storageRef = ref(storage, username);
-        const uploadTask = uploadBytesResumable(storageRef, image);
-
-        uploadTask.on(
-          (err) => setErr(err),
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
-              try {
-                await updateProfile(res.user, {
-                  displayName: username,
-                  photoURL: downloadURL
-                })
-
-                await setDoc(doc(db, "users", res.user.uid), {
-                  uid: res.user.uid,
-                  username,
-                  email,
-                  photoURL: downloadURL
-                })
-
-              } catch(err) {
-                setErr(err);
-                toast.error("Something went wrong :(");
-              }
+      uploadTask.on(
+        (err) => setErr(err),
+        async () => {
+          try {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            await updateProfile(userCredentials.user, {
+              displayName: username,
+              photoURL: downloadURL,
             });
+
+            await setDoc(doc(db, "users", userCredentials.user.uid), {
+              uid: userCredentials.user.uid,
+              username,
+              email,
+              photoURL: downloadURL,
+            });
+
+            if(err === "") {
+              navigate("/");
+              toast.success("Successfully Signed Up");
+            }
+          } catch (err) {
+            setErr(err);
+            throw new Error(err);
           }
-          );
-          
-          navigate("/");
-          toast.success("Successfully Signed Up");
-    } catch(err) { 
-        setErr(err); 
-        toast.error("Failed to Sign up");
-        console.log(err); // TODO: error handling with cases
+        }
+      );
+    } catch (err) {
+      setErr(err);
+      toast.error("Something Went Wrong")
+      throw new Error(err);
     }
   };
 
@@ -182,7 +181,12 @@ export default function SignupForm() {
 
       <form onSubmit={handleSubmit}>
         <div className="form_title">
-          Create a New Account
+          <h1>
+            Create new account<span>.</span>
+          </h1>
+          <p>
+            Already a member? <Link to="/login">Sign up</Link>
+          </p>
         </div>
         <div className="form_inputs">
           <label>
@@ -226,7 +230,7 @@ export default function SignupForm() {
             />
           </label>
           <br />
-          <button type="submit">Crea account</button>
+          <button type="submit">Sign up</button>
         </div>
       </form>
     </div>

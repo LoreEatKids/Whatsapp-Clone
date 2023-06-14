@@ -1,4 +1,4 @@
-import "./styles/chat.scss";
+import "./styles/OpenChat.scss";
 
 export default function Chat() {
     return (

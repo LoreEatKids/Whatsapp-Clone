@@ -15,7 +15,12 @@ aside {
             * { color: $white; } 
         }
 
-        button { border-bottom: 1px solid $white; }
+        button { 
+            @include bootstrap-btn;
+            @include bootstrap-btn-secondary;
+            width: 75px;
+            padding: 1px;
+        }
 
         svg, .img-container button { 
             transition: opacity $basic-transition ease;

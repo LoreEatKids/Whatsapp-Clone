@@ -1,6 +1,8 @@
 import { signOut } from "firebase/auth";
+import { useContext } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import { auth } from "../firebase";
 import Chats from "./Chats";
 import Navbar from "./Navbar";
@@ -8,6 +10,7 @@ import "./styles/aside.scss";
 
 export default function Aside() {
     const navigate = useNavigate();
+    const {currentUser} = useContext(AuthContext);
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -18,7 +21,7 @@ export default function Aside() {
         <aside>
             <header className="d-f">
                 <div className='img-container d-f'>
-                    <img className="pfp" src="https://pps.whatsapp.net/v/t61.24694-24/309649900_794392958504472_6989118036091347268_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=01_AdSsGe6h7t9ghsK9qU-xEqUfdPpYbMkNNJYkXz0Vq4MAcQ&oe=6493DF19" alt="pfp" />
+                    <img className="pfp" src={currentUser.photoURL} alt="pfp" />
                     <button type="button" onClick={handleLogout}>logout</button>
                 </div>
                 <div className="links d-f">

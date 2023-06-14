@@ -65,10 +65,18 @@
    flex-direction: column;
 }
 
+@mixin bootstrap-btn-primary {
+   background-color: $btn-blue-bg;
+   border-color: $btn-blue-bg;
+}
+
+@mixin bootstrap-btn-secondary {
+   background-color: $btn-grey-bg;
+   border-color: $btn-grey-bg;
+}
+
 @mixin bootstrap-btn {
-   color: #fff;
-   background-color: #007bff;
-   border-color: #007bff;
+   color: $white;
    display: inline-block;
    font-weight: 400;
    text-align: center;

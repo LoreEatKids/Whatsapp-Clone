@@ -1,17 +1,16 @@
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Register";
 import { AuthContext } from "./context/AuthContext";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import "./styles/main.scss";
 import PrivateRoute from "./utilities/PrivateRoute";
 
 export default function App() {
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser);
-   
+  
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/login" />;

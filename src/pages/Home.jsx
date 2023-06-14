@@ -1,6 +1,6 @@
+import Aside from "../components/Aside";
+import Chat from "../components/OpenChat";
 import "../styles/main.scss";
-import Aside from "./Aside";
-import Chat from "./Chat";
 
 export default function ChatApp() {
   return (
