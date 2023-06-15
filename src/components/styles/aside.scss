@@ -5,7 +5,7 @@ aside {
     width: clamp(478px, 478px, 478px);
 
     header {
-        padding: 8px 14px;
+        padding: $aside-padding;
         height: 60px;
 
         .img-container {
@@ -13,6 +13,8 @@ aside {
             gap: 10px;
             font-size: 14px;
             * { color: $white; } 
+
+            img { @include pfp }
         }
 
         button { 

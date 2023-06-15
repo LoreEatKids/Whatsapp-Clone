@@ -1,3 +1,13 @@
 @mixin opacity-animation {
     &:hover { opacity: .8; }
 }
+
+@mixin keyframes($name){
+    @keyframes #{$name}{
+        @content;
+    }
+}
+
+@mixin animate($animation,$duration,$method,$times){
+    animation: $animation $duration $method $times;
+}
