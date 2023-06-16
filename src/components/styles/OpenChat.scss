@@ -4,4 +4,39 @@ main.chat {
     background-color: $main-background;
     border-left: 1px solid $chat-border;
     width: 1120px;
+
+    header {
+        padding: $aside-padding;
+        height: 60px;
+
+        .pfp_container {
+            width: 90%;
+            cursor: pointer;
+            h1 {
+                color: $white;
+                font-size: 16px;
+            }
+            img { @include pfp }
+
+            .user_infos {
+                margin-left: 15px;
+                @include vertical-align;
+                gap: 3px;
+                p { 
+                    font-size: 13px;
+                    color: $input-grey-color;
+                }
+            }
+        }
+
+        .icons_container {
+            gap: 25px;
+            margin-right: 10px;
+
+            svg {
+                @include opacity-animation;
+                transition: opacity $basic-transition;
+            }
+        }
+    }
 }

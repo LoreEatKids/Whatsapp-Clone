@@ -1,49 +1,47 @@
 @mixin prefix($prop, $value) {
-   -webkit-#{$prop}: #{$value};
-   -moz-#{$prop}: #{$value};
-   -ms-#{$prop}: #{$value};
-   -o-#{$prop}: #{$value};
-   #{$prop}: #{$value};
+  -webkit-#{$prop}: #{$value};
+  -moz-#{$prop}: #{$value};
+  -ms-#{$prop}: #{$value};
+  -o-#{$prop}: #{$value};
+  #{$prop}: #{$value};
 }
 /* @include prefix(transform, scale3d(2.5, 2, 1.5));  */
 
 @mixin font-face($name, $file) {
-   @font-face {
-   font-family: "#{$name}";
-   src: url("../fonts/#{$file}.eot");
-   src: url("../fonts/#{$file}.eot?#iefix") format("embedded-opentype"),
-   url("../fonts/#{$file}.woff") format("woff"),
-   url("../fonts/#{$file}.ttf") format("truetype"),
-   url("../fonts/#{$file}.svg?#webfont") format("svg");
- }
+  @font-face {
+    font-family: "#{$name}";
+    src: url("../fonts/#{$file}.eot");
+    src: url("../fonts/#{$file}.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/#{$file}.woff") format("woff"),
+      url("../fonts/#{$file}.ttf") format("truetype"),
+      url("../fonts/#{$file}.svg?#webfont") format("svg");
+  }
 }
 /* @include font-face("My Font", my-font); */
 
-@mixin abs-position ($top, $right, $bottom, $left) {
-   position: absolute; 
-   top: $top;
-   right: $right;
-   bottom: $bottom;
-   left: $left;
+@mixin abs-position($top, $right, $bottom, $left) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
 }
 /* @include abs-position(100px, 100px, auto, auto); */
 
 @mixin breakpoint($point) {
-   @if $point == large {
-      @media only screen and (min-width: 1366px) {
-         @content;
-      }
-   } 
-   @else if $point == desktop {
-      @media only screen and (min-width: 1024px) {
-         @content;
-      }
-   } 
-   @else if $point == tablet {
-      @media only screen and (min-width: 600px) {
-         @content;
-      }
-   }
+  @if $point == large {
+    @media only screen and (min-width: 1366px) {
+      @content;
+    }
+  } @else if $point == desktop {
+    @media only screen and (min-width: 1024px) {
+      @content;
+    }
+  } @else if $point == tablet {
+    @media only screen and (min-width: 600px) {
+      @content;
+    }
+  }
 }
 /*
 @include breakpoint(large) {
@@ -55,59 +53,79 @@
 
 /* global mixings */
 @mixin full-screen {
-   width: 100vw;
-   height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
 @mixin center-align {
-   display: flex;
-   align-items: center;
-   justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin vertical-align {
-   display: flex;
-   align-items: flex-start;
-   flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 @mixin bootstrap-btn-primary {
-   background-color: $btn-blue-bg;
-   border-color: $btn-blue-bg;
+  background-color: $btn-blue-bg;
+  border-color: $btn-blue-bg;
 }
 
 @mixin bootstrap-btn-secondary {
-   background-color: $btn-grey-bg;
-   border-color: $btn-grey-bg;
+  background-color: $btn-grey-bg;
+  border-color: $btn-grey-bg;
 }
 
 @mixin bootstrap-btn {
-   color: $white;
-   display: inline-block;
-   font-weight: 400;
-   text-align: center;
-   white-space: nowrap;
-   vertical-align: middle;
-   @include prefix(user-select, none);
-   border: 1px solid transparent;
-   border-top-color: transparent;
-   border-right-color: transparent;
-   border-bottom-color: transparent;
-   border-left-color: transparent;
-   padding: .375rem .75rem;
-   font-size: 1rem;
-   line-height: 1.5;
-   border-radius: .50rem;
-   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-   width: 100%;
+  color: $white;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  @include prefix(user-select, none);
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.5rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
+}
+
+@mixin whatsapp-input {
+  padding: 9px 12px;
+  margin: 5px 8px;
+  background-color: $compose-input-background;
+  border: 1px solid $compose-input-border;
+  border-radius: 8px;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  width: 70%;
+  min-width: 0;
+  min-height: 20px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  outline: none;
+  will-change: width;
+  display: flex;
 }
 
 @mixin pfp {
-   height: $pfp-width-height;
-   width: $pfp-width-height;
+  height: $pfp-width-height;
+  width: $pfp-width-height;
 }
 
 @mixin pfpChats {
-   height: $pfp-searched-user-width-height;
-   width: $pfp-searched-user-width-height;
+  height: $pfp-searched-user-width-height;
+  width: $pfp-searched-user-width-height;
 }

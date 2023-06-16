@@ -1,0 +1,4 @@
+export const ACTION_TYPES = {
+    CHANGE_USER: "CHANGE_USER",
+    RESET_CHAT: "RESET_CHAT"
+}

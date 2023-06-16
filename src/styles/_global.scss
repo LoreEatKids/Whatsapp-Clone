@@ -19,5 +19,6 @@ svg { color: $sidebar-icons-color; }
 
 .pfp {
     cursor: pointer; 
+    object-fit: cover;
     border-radius: 9999px;
 }
