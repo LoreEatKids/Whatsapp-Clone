@@ -1,0 +1,62 @@
+@import "../../styles/main.scss";
+
+.row {
+    width: 100%;
+    padding: 15px 69px;
+    position: relative;
+
+    &.user {
+        width: 100%;
+    }
+
+    &.owner {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .message_svg {
+        position: absolute;
+        z-index: 100;
+        display: block;
+        width: 8px;
+        height: 13px;
+
+        &.user {
+            rotate: 90deg;
+            top: 12.5px;
+            left: 63.5px;
+        }
+
+        &.owner {
+            right: 61px;
+            top: 12.5px;
+        }
+
+        svg {  
+            pointer-events: none;
+            cursor:  unset !important;
+            user-select: none;
+
+            &.owner {color: $outgoing-background;}
+            &.user { color: $incoming-background; }
+        }
+    }
+
+    .message {
+        border-radius: 7.5px;
+        padding: 8px 10px;
+        font-size: 14px;
+        color: $white;
+
+        &.user {
+            background-color: $incoming-background;
+            border-top-left-radius: 0;
+            width: fit-content;
+        }
+
+        &.owner { 
+            background-color: $outgoing-background;
+            border-top-right-radius: 0;
+        }
+    }
+}

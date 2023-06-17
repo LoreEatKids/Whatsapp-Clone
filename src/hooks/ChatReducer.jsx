@@ -11,8 +11,8 @@ export const chatReducer = (state, action, currentUser) => {
       return {
         user: action.payload,
         chatId:
-          currentUser.uid > action.payload.id
-            ? currentUser.uid + action.payload.id
+          currentUser.uid > action.payload.uid
+            ? currentUser.uid + action.payload.uid
             : action.payload.uid + currentUser.uid,
       };
     case ACTION_TYPES.RESET_CHAT:

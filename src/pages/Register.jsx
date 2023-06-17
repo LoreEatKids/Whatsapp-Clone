@@ -40,32 +40,27 @@ export default function SignupForm() {
     e.preventDefault();
 
     try {
-      const userCredentials = await createUserWithEmailAndPassword( auth, email, password);
+      const res = await createUserWithEmailAndPassword( auth, email, password);
       const storageRef = ref(storage, username);
-      const uploadTask = uploadBytesResumable(storageRef, image);
 
-      uploadTask.on(
-        (err) => {
-          setErr(err);
-          return;
-        },
-        async () => {
+      await uploadBytesResumable(storageRef, image).then(() => {
+        getDownloadURL(storageRef).then(async (downloadURL) => {
           try {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            await updateProfile(userCredentials.user, {
+            await updateProfile(res.user, {
               displayName: username,
               photoURL: downloadURL,
             });
 
-            await setDoc(doc(db, "users", userCredentials.user.uid), {
-              uid: userCredentials.user.uid,
-              username,
+            await setDoc(doc(db, "users", res.user.uid), {
+              uid: res.user.uid,
+              displayName: username,
               email,
               photoURL: downloadURL,
-              usernameToLowerCase: username.toLowerCase()
+              usernameToLowerCase: username.toLowerCase(),
             });
 
-            if(err === "") {
+            if (err === "") {
+              await setDoc(doc(db, "userChats", res.user.uid), {});
               navigate("/");
               toast.success("Successfully Signed Up");
             }
@@ -73,15 +68,15 @@ export default function SignupForm() {
             setErr(err);
             throw new Error(err);
           }
-        }
-      );
+        })
+      })
     } catch (err) {
       setErr(err);
       toast.error("Something Went Wrong")
       throw new Error(err);
     }
-  };
-
+  }
+  
   return (
     <div className="form_container d-f d-c">
       <div>

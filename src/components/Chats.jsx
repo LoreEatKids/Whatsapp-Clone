@@ -31,9 +31,13 @@ export default function Chats() {
     dispatch({ type: "CHANGE_USER", payload: user });
   }
 
+  Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => {
+    console.log(chat[1])
+  })
+
   return (
     <div className="chats_container">
-      {Object.entries(chats)?.map((chat) => (
+      {Object.entries(chats)?.sort((a,b) => b[1].date - a[1].date).map((chat) => (
         <div className="chat d-f" key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
           <div className="chat__img_container">
             <img className="pfp" src={chat[1].userInfo.photoURL} alt="pfp" />
@@ -41,9 +45,8 @@ export default function Chats() {
           <div className="chat__infos d-f s-b">
             <div className="chat__preview">
               <h1>{chat[1].userInfo.username}</h1>
-              <p>Last message</p>
+              <p>{chat[1].lastMessage?.text}</p>
             </div>
-
             <div className="chat__time">12:00</div>
           </div>
         </div>

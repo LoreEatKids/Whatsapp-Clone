@@ -23,6 +23,7 @@ export default function SearchList({
   const { currentUser } = useContext(AuthContext);
 
   const handleChatSelect = async (user) => {
+    console.log(user, currentUser)
     const combinedId =
       currentUser.uid > user.id
         ? currentUser.uid + user.id
@@ -70,7 +71,7 @@ export default function SearchList({
         await updateDoc(currentUserChatsRef, {
           [combinedId + ".userInfo"]: {
             uid: user.uid, 
-            username: user.username,
+            username: user.displayName,
             photoURL: user.photoURL,
           },
           [combinedId + ".date"]: serverTimestamp(),
@@ -80,7 +81,7 @@ export default function SearchList({
           [combinedId]: {
             userInfo: {
               uid: user.uid,
-              username: user.username,
+              username: user.displayName,
               photoURL: user.photoURL,
             },
             date: serverTimestamp(),
@@ -94,13 +95,13 @@ export default function SearchList({
       console.warn(error);
       toast.error("Something Went Wrong");
     }
-  };
+  };  
 
   const users = results.map((user) => (
     <li key={user.uid} onClick={() => handleChatSelect(user)} className="d-f">
-      <img src={user.photoURL} alt={user.username} className="pfp" />
+      <img src={user.photoURL} alt={user.displayName} className="pfp" />
       <div className="infos_container">
-        <h3>{user.username}</h3>
+        <h3>{user.displayName}</h3>
         <p>Start a conversation</p>
       </div>
     </li>
