@@ -8,6 +8,8 @@ main.messages_container {
     #messages_container {
       z-index: 2;
       position: relative;
+      height: 100%;
+      overflow: scroll;
     }
 
     .background {

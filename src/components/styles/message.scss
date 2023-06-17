@@ -47,6 +47,7 @@
         padding: 8px 10px;
         font-size: 14px;
         color: $white;
+        word-wrap: anywhere;
 
         &.user {
             background-color: $incoming-background;

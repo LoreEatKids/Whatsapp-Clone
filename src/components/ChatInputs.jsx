@@ -21,6 +21,9 @@ export default function ChatInputs() {
     }
 
     const handleSubmit = async () => {
+      setText("");
+      setImg(null);
+      
       if (img) {
         return;
       } else {
@@ -47,9 +50,6 @@ export default function ChatInputs() {
         },
         [data.chatId + ".date"]: serverTimestamp(),
       });
-
-      setText("");
-      setImg(null);
     };
 
     return (
