@@ -53,11 +53,27 @@
             background-color: $incoming-background;
             border-top-left-radius: 0;
             width: fit-content;
+
+            .hours {
+                height: auto !important;
+                padding-left: 6px;
+            }
         }
 
         &.owner { 
             background-color: $outgoing-background;
             border-top-right-radius: 0;
+        }
+
+        .hours {
+            font-size: 10px;
+            padding-left: 10px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            height: 113%;
+            width: 42px;
+            color: $chat-hours-color;
         }
     }
 }

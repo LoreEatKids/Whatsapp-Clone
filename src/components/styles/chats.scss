@@ -3,13 +3,17 @@
 .chats_container {
   padding: 20px 0;
   height: $chat-container-width;
+  overflow: scroll;
+  max-height: 100%;
+  height: $chats-container-width;
 
   .chat {
     width: 100%;
     height: 72px;
     padding: 14px;
     cursor: pointer;
-    &:hover {
+    &:hover,
+    &.selected {
       background-color: $chat-hover-color;
     }
 
@@ -30,7 +34,10 @@
       overflow: hidden;
 
       .chat__time {
+        font-size: 12px;
         padding-left: 20px;
+        color: $chat-preview-color;
+        padding-bottom: 20px;
       }
 
       .chat__preview {

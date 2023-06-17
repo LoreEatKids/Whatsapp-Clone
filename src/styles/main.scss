@@ -13,4 +13,6 @@ main.app {
     @include full-screen;
     border: 1px solid $home-background;
     padding: 17px 40px;
+
+    .chat_container { justify-content: center; }
 }

@@ -23,7 +23,6 @@ export default function SearchList({
   const { currentUser } = useContext(AuthContext);
 
   const handleChatSelect = async (user) => {
-    console.log(user, currentUser)
     const combinedId =
       currentUser.uid > user.id
         ? currentUser.uid + user.id
