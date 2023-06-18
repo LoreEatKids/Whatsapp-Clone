@@ -1,0 +1,30 @@
+@import "../../styles/main.scss";
+
+.contextmenu {
+    position: absolute;
+    z-index: 9999;
+    min-width: 215px;
+    padding: 9px 0;
+    height: auto;
+    background-color: $dropdown-background;
+    color: $dropdown-text-color;
+    font-size: 15px;
+    font-weight: 400px;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(var(--shadow-rgb),.26),0 2px 10px 0 rgba(var(--shadow-rgb),.16);
+
+    ul {
+        li {
+            padding-right: 58px;
+            padding-left: 24px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                background-color: $dropdown-background-hover;
+                cursor: pointer;
+            }
+         }
+    }
+}

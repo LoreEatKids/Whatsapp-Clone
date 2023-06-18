@@ -7,9 +7,8 @@ import "./styles/chats.scss";
 
 export default function Chats() {
   const { currentUser } = useContext(AuthContext);
-  const { dispatch } = useContext(ChatContext);
+  const { dispatch, data } = useContext(ChatContext);
   const [chats, setChats] = useState([]);
-  const [selectedChatId, setSelectedChatId] = useState(null);
 
   useEffect(() => {
     const getChats = () => {
@@ -28,9 +27,8 @@ export default function Chats() {
     currentUser.uid && getChats();
   }, [currentUser.uid, dispatch]);
 
-  const handleSelect = (user, chatId) => {
+  const handleSelect = (user) => {
     dispatch({ type: "CHANGE_USER", payload: user });
-    setSelectedChatId(chatId);
   }
 
   const getDate = (date) => {
@@ -51,10 +49,10 @@ export default function Chats() {
         .map((chat) => (
           <div
             className={`chat d-f ${
-              selectedChatId === chat[0] ? "selected" : ""
+              data.chatId === chat[0] ? "selected" : ""
             }`}
             key={chat[0]}
-            onClick={() => handleSelect(chat[1].userInfo, chat[0])}
+            onClick={() => handleSelect(chat[1].userInfo)}
           >
             <div className="chat__img_container">
               <img className="pfp" src={chat[1].userInfo.photoURL} alt="pfp" />
