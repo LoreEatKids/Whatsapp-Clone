@@ -59,11 +59,9 @@ export default function SignupForm() {
               usernameToLowerCase: username.toLowerCase(),
             });
 
-            if (err === "") {
-              await setDoc(doc(db, "userChats", res.user.uid), {});
-              navigate("/");
-              toast.success("Successfully Signed Up");
-            }
+            await setDoc(doc(db, "userChats", res.user.uid), {});
+            navigate("/");
+            toast.success("Successfully Signed Up");
           } catch (err) {
             setErr(err);
             throw new Error(err);

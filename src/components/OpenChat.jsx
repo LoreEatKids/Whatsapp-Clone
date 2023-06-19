@@ -42,7 +42,7 @@ export default function Chat() {
           <div className="pfp_container d-f">
             <img src={data.user.photoURL} alt="" className="pfp"></img>
             <div className="user_infos">
-                <h1>{data.user?.username}</h1>
+                <h1>{data.user?.displayName}</h1>
                 {showContactInfo && (<p className="infos">clicca qui per info contatto</p>)}
             </div>
           </div>
