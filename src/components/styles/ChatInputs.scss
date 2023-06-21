@@ -1,23 +1,48 @@
 @import "../../styles/main";
 
 .inputs_container {
+  position: relative;
   padding: 0 25px;
   height: 60px;
+
+  .input_img-container {
+    position: relative;
+
+    input {
+      cursor: pointer;
+      position: absolute;
+      opacity: 0;
+      z-index: 1;
+      width: 100%;
+    }
+  }
+  .emoji-menu {
+    position: absolute;
+    z-index: 9999;
+    top: -47vh;
+  }
 
   .icons_container {
     gap: 16px;
     padding-top: 5px;
+
+    svg:hover {
+      @include opacity-animation;
+      transition: opacity $basic-transition;
+    }
   }
 
   .input_container {
     @include whatsapp-input;
     margin-top: 10px !important;
     margin-left: 15px !important;
+    z-index: 9999;
 
     input { 
         width: 100%;
         padding: 0 5px;
         color: $white; 
     }
+
   }
 }

@@ -11,7 +11,6 @@ export default function Message({ message }) {
       const date = new Date(milliseconds);
       const hours = date.getHours();
       const minutes = date.getMinutes().toString().padStart(2, '0');
-      
       return `${hours}:${minutes}`;
   }
 
@@ -41,10 +40,17 @@ export default function Message({ message }) {
           </svg>
         </div>
         <div className={`message flex ${messageOwner}`}>
-          <h1>{message.text}</h1>
-          <p className="hours">
-            <span>{getHour()}</span>
-          </p>
+          <div className="message_content flex">
+            <div className="text_infos flex">
+              <h1>{message.text}</h1>
+              <p className="hours">
+                <span>{getHour()}</span>
+              </p>
+            </div>
+            <div className="message_img_container">
+              {message.img && <img src={message.img} alt="img" />}
+            </div>
+          </div>
         </div>
       </div>
     </>

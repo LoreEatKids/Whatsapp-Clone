@@ -28,8 +28,8 @@
         }
 
         &.owner {
-            right: 61px;
-            top: 12.5px;
+            right: 6.3vh;
+            top: 1.3vh;
         }
 
         svg {  
@@ -65,15 +65,29 @@
             border-top-right-radius: 0;
         }
 
-        .hours {
-            font-size: 10px;
-            padding-left: 10px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            height: 113%;
-            width: 42px;
-            color: $chat-hours-color;
+        .text_infos {
+            justify-content: space-between;
+            h1 {max-width: 95%;}
+
+            .hours {
+                font-size: 10px;
+                color: $chat-hours-color;
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-end;
+                padding-top: 8px;
+                width: 44px;
+            }
+        }
+        .message_content {
+            flex-direction: column-reverse;
+
+            img {
+                margin-bottom: 15px;
+                max-width: 100%;
+                max-height: 300px; /* Imposta l'altezza massima desiderata per le immagini */
+                cursor: pointer;
+            }
         }
     }
 }
