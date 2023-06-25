@@ -4,6 +4,7 @@ import "./styles/message.scss";
 
 export default function Message({ message }) {
   const { currentUser } = useContext(AuthContext);
+  const noTextClass = message.text === "" ? "noText" : ""
   const ref = useRef();
 
   const getHour = () => {
@@ -40,7 +41,7 @@ export default function Message({ message }) {
           </svg>
         </div>
         <div className={`message flex ${messageOwner}`}>
-          <div className="message_content flex">
+          <div className={`message_content ${noTextClass} flex`}>
             <div className="text_infos flex">
               <h1>{message.text}</h1>
               <p className="hours">
@@ -48,7 +49,7 @@ export default function Message({ message }) {
               </p>
             </div>
             <div className="message_img_container">
-              {message.img && <img src={message.img} alt="img" />}
+              {message.img && <img src={message.img} className={noTextClass} alt="img" />}
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
@@ -10,17 +10,33 @@ import "./styles/ChatInputs.scss";
 
 export default function ChatInputs() {
     const [text, setText] = useState("");
-    const [img, setImg] = useState(null);
     const [audioFile, setAudioFile] = useState(null);
     const {currentUser} = useContext(AuthContext);
     const [emojiMenuVisible, setEmojiMenuVisible] = useState(false);
-    const { data } = useContext(ChatContext);
+    const { data, setImgModalVisible, img, setImg} = useContext(ChatContext);
+
+    const clearStates = () => {
+      setText("");
+      setImg(null);
+      setAudioFile(null);
+      setEmojiMenuVisible(false);
+      setImgModalVisible([false, ""]);
+    };
+
+    useEffect(() => {
+      const unSub = () => clearStates();
+
+      return () => {
+        unSub();
+      };
+    }, [data.chatId]);
 
     const handleTextChange = e => setText(e.target.value);
     const handleImgChange = e => {
       const file = e.target.files[0];
       if (file && file.type.startsWith("image/")) {
         setImg(file);
+        setImgModalVisible([true, URL.createObjectURL(file)]);
       }
     }
 
@@ -29,42 +45,36 @@ export default function ChatInputs() {
 
     const handleKeyDown = e => {
         if (e.keyCode === 13) {
-            if(text === "") return;
+            if(text === "" && img === null) return;
             else handleSubmit();
         }
     }
-
+    
     const handleSubmit = async () => {
-      setText("");
-      setImg(null);
-      setAudioFile(null);
-      setEmojiMenuVisible(false);
+      clearStates();
       
-      if (img) {
-        const storageRef = ref(storage, uuid());
-        const uploadTask = uploadBytesResumable(storageRef, img);
-
-        uploadTask.on(
-          (error) => {
-            return;
-          },
-
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                await updateDoc(doc(db, "chats", data.chatId), {
-                  messages: arrayUnion({
-                    id: uuid(),
-                    text,
-                    senderId: currentUser.uid,
-                    date: Timestamp.now(),
-                    img: downloadURL,
-                  }),
-                });
-              }
-            );
-          }
-        )
+      if(img) {
+        const storageRef = ref(storage, `chatImgs/${uuid()}`);
+        
+        await uploadBytesResumable(storageRef, img).then(() => {
+          getDownloadURL(storageRef).then(async (downloadURL) => {
+            try {
+              await updateDoc(doc(db, "chats", data.chatId), {
+                messages: arrayUnion({
+                  id: uuid(),
+                  text,
+                  senderId: currentUser.uid,
+                  date: Timestamp.now(),
+                  img: downloadURL,
+                }),
+              });
+            } catch(error) {
+              console.error(error)
+            }
+          })
+        });
+      } else if(audioFile) {
+        return
       } else {
         await updateDoc(doc(db, "chats", data.chatId), {
           messages: arrayUnion({
@@ -82,7 +92,6 @@ export default function ChatInputs() {
         },
         [data.chatId + ".date"]: serverTimestamp(),
       });
-
       await updateDoc(doc(db, "userChats", data.user.uid), {
         [data.chatId + ".lastMessage"]: {
           text,
@@ -102,7 +111,6 @@ export default function ChatInputs() {
                 )}
 
                 <div className="icons_container flex">
-
                     <button className="d-f" type="button" onClick={toggleEmojiMenu}>
                       <svg viewBox="0 0 24 24" height="25.5" width="25.5"><path fill="currentColor" d="M9.153,11.603c0.795,0,1.439-0.879,1.439-1.962S9.948,7.679,9.153,7.679 S7.714,8.558,7.714,9.641S8.358,11.603,9.153,11.603z M5.949,12.965c-0.026-0.307-0.131,5.218,6.063,5.551 c6.066-0.25,6.066-5.551,6.066-5.551C12,14.381,5.949,12.965,5.949,12.965z M17.312,14.073c0,0-0.669,1.959-5.051,1.959 c-3.505,0-5.388-1.164-5.607-1.959C6.654,14.073,12.566,15.128,17.312,14.073z M11.804,1.011c-6.195,0-10.826,5.022-10.826,11.217 s4.826,10.761,11.021,10.761S23.02,18.423,23.02,12.228C23.021,6.033,17.999,1.011,11.804,1.011z M12,21.354 c-5.273,0-9.381-3.886-9.381-9.159s3.942-9.548,9.215-9.548s9.548,4.275,9.548,9.548C21.381,17.467,17.273,21.354,12,21.354z  M15.108,11.603c0.795,0,1.439-0.879,1.439-1.962s-0.644-1.962-1.439-1.962s-1.439,0.879-1.439,1.962S14.313,11.603,15.108,11.603z"></path></svg>
                     </button>

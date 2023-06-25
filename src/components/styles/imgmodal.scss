@@ -1,0 +1,27 @@
+@import "../../styles/main";
+
+.imgModal {
+    @include abs-position(0, unset, unset, unset);
+    @include center-align;
+    @include vertical-align;
+    align-items: center !important;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+    background: $modal-img-background-color;
+
+    .controls_container {
+        margin-bottom: 30px;
+        svg {
+            @include opacity-animation;
+            color: $sidebar-icons-color;
+            transition: opacity $basic-transition;
+        }
+    }
+
+    img { 
+        max-width: 800px;
+        max-height: 600px;
+        cursor: pointer;
+    }
+}

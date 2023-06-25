@@ -4,11 +4,12 @@ import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
 import ChatInputs from "./ChatInputs";
 import ContextMenu from "./ContextMenu";
+import ImgModal from "./ImgModal";
 import Message from "./Message";
 import "./styles/messages.scss";
 
 export default function Messages() {
-  const { data } = useContext(ChatContext);
+  const { data, imgModalVisible } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [x, setX] = useState(0);
@@ -39,9 +40,12 @@ export default function Messages() {
           ))}
         </div>
         <div className="background"></div>
+        {imgModalVisible[0] && <ImgModal img={imgModalVisible[1]} />}
       </main>
       <ChatInputs />
-      {showContextMenu && <ContextMenu pos={{ x, y }} onClose={() => setShowContextMenu(false)} />}
+      {showContextMenu && (
+        <ContextMenu pos={{ x, y }} onClose={() => setShowContextMenu(false)} />
+      )}
     </>
   );
 };

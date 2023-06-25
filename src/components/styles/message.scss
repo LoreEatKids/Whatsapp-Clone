@@ -81,12 +81,15 @@
         }
         .message_content {
             flex-direction: column-reverse;
+            &.noText { flex-direction: row-reverse !important; }
 
             img {
                 margin-bottom: 15px;
                 max-width: 100%;
                 max-height: 300px; /* Imposta l'altezza massima desiderata per le immagini */
                 cursor: pointer;
+
+                &.noText { margin-bottom: 0 !important; }
             }
         }
     }

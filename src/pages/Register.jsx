@@ -41,7 +41,7 @@ export default function SignupForm() {
 
     try {
       const res = await createUserWithEmailAndPassword( auth, email, password);
-      const storageRef = ref(storage, username);
+      const storageRef = ref(storage, `usersPfp/${username}`);
 
       await uploadBytesResumable(storageRef, image).then(() => {
         getDownloadURL(storageRef).then(async (downloadURL) => {
