@@ -60,7 +60,7 @@ export default function Chats() {
             <div className="chat__infos d-f s-b">
               <div className="chat__preview">
                 <h1>{chat[1].userInfo.displayName}</h1>
-                <p>{chat[1].lastMessage?.text}</p>
+                <p className={`${chat[1].lastMessage?.text === "Photo" ? "photo" : ""}`} >{chat[1].lastMessage?.text}</p>
               </div>
               <div className="chat__time">{chat[1].date !== null && getDate(chat[1].date)}</div>
             </div>

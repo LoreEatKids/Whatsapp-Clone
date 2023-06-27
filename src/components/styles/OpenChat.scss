@@ -4,6 +4,7 @@ main.chat {
     background-color: $main-background;
     border-left: 1px solid $chat-border;
     width: 1120px;
+    position: relative;
 
     header {
         padding: $aside-padding;
@@ -38,5 +39,27 @@ main.chat {
                 transition: opacity $basic-transition;
             }
         }
+    }
+
+    .drag_menu {
+        position: absolute;
+        z-index: 9999;
+        width: 100%;
+        justify-content: center;
+        height: 0;
+        background-color: $home-background;
+        transition: height $basic-transition ease-in-out;
+        opacity: 0;
+
+        &.active {
+            opacity: 1;
+            height: 94%;
+        }
+
+        * { 
+            color: $white;
+            font-size: 25px;
+            font-size: 700;
+         }
     }
 }

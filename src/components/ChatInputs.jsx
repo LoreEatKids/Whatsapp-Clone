@@ -86,15 +86,18 @@ export default function ChatInputs() {
         });
       }
 
+      const lastMesssge = img ? "Photo" : text;
+      console.log(lastMesssge);
+
       await updateDoc(doc(db, "userChats", currentUser.uid), {
         [data.chatId + ".lastMessage"]: {
-          text,
+          text: lastMesssge,
         },
         [data.chatId + ".date"]: serverTimestamp(),
       });
       await updateDoc(doc(db, "userChats", data.user.uid), {
         [data.chatId + ".lastMessage"]: {
-          text,
+          text: lastMesssge,
         },
         [data.chatId + ".date"]: serverTimestamp(),
       });
