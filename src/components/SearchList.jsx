@@ -22,80 +22,6 @@ export default function SearchList({
 }) {
   const { currentUser } = useContext(AuthContext);
 
-  // const handleChatSelect = async (user) => {
-  //   const combinedId =
-  //     currentUser.uid > user.id
-  //       ? currentUser.uid + user.id
-  //       : user.uid + currentUser.uid;
-
-  //   try {
-  //     const chatRef = doc(db, "chats", combinedId);
-  //     const chatSnap = await getDoc(chatRef);
-
-  //     if (!chatSnap.exists()) {
-  //       // create a chat
-  //       await setDoc(chatRef, { messages: [] });
-  //     }
-
-  //     // create user chats
-  //     const userChatsRef = doc(db, "userChats", user.uid);
-  //     const userChatsSnap = await getDoc(userChatsRef);
-
-  //     if (userChatsSnap.exists()) {
-  //       await updateDoc(userChatsRef, {
-  //         [combinedId + ".userInfo"]: {
-  //           uid: currentUser.uid,
-  //           username: currentUser.displayName,
-  //           photoURL: currentUser.photoURL
-  //         },
-  //         [combinedId + ".date"]: serverTimestamp(),
-  //       });
-  //     } else {
-  //       await setDoc(userChatsRef, {
-  //         [combinedId]: {
-  //           userInfo: {
-  //             uid: currentUser.uid,
-  //             username: currentUser.displayName,
-  //             photoURL: currentUser.photoURL,
-  //           },
-  //           date: serverTimestamp(),
-  //         },
-  //       });
-  //     }
-
-  //     const currentUserChatsRef = doc(db, "userChats", currentUser.uid);
-  //     const currentUserChatsSnap = await getDoc(currentUserChatsRef);
-
-  //     if (currentUserChatsSnap.exists()) {
-  //       await updateDoc(currentUserChatsRef, {
-  //         [combinedId + ".userInfo"]: {
-  //           uid: user.uid, 
-  //           username: user.displayName,
-  //           photoURL: user.photoURL,
-  //         },
-  //         [combinedId + ".date"]: serverTimestamp(),
-  //       });
-  //     } else {
-  //       await setDoc(currentUserChatsRef, {
-  //         [combinedId]: {
-  //           userInfo: {
-  //             uid: user.uid,
-  //             username: user.displayName,
-  //             photoURL: user.photoURL,
-  //           },
-  //           date: serverTimestamp(),
-  //         },
-  //       });
-  //     }
-
-  //     handleCloseSearchList();
-  //   } catch (error) {
-  //     setErr(error);
-  //     console.warn(error);
-  //     toast.error("Something Went Wrong");
-  //   }
-  // };  
-
   const handleChatSelect = async (user) => {
     //check whether the group(chats in firestore) exists, if not create
     const combinedId =
@@ -133,7 +59,7 @@ export default function SearchList({
       handleCloseSearchList();
     } catch (error) {
       setErr(error);
-      console.warn(error);
+      console.error(err);
       toast.error("Something Went Wrong");
     }}
 

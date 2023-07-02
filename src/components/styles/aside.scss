@@ -3,6 +3,7 @@
 aside {
     background-color: $sidebar-background;
     width: clamp(478px, 478px, 478px);
+    position: relative;
 
     header {
         padding: $aside-padding;

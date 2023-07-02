@@ -42,30 +42,50 @@ export default function Chats() {
     return `${giorno}/${mese}/${anno}`;
   }
 
+  Object.entries(chats).forEach(chat => console.log(chat))
+
   return (
     <div className="chats_container">
       {Object.entries(chats)
         ?.sort((a, b) => b[1].date - a[1].date)
-        .map((chat) => (
-          <div
-            className={`chat d-f ${
-              data.chatId === chat[0] ? "selected" : ""
-            }`}
-            key={chat[0]}
-            onClick={() => handleSelect(chat[1].userInfo)}
-          >
-            <div className="chat__img_container">
-              <img className="pfp" src={chat[1].userInfo.photoURL} alt="pfp" />
-            </div>
-            <div className="chat__infos d-f s-b">
-              <div className="chat__preview">
-                <h1>{chat[1].userInfo.displayName}</h1>
-                <p className={`${chat[1].lastMessage?.text === "Photo" ? "photo" : ""}`} >{chat[1].lastMessage?.text}</p>
+        .map((chat) => {
+          if (chat[1].type === "group") {
+            return <h1>group</h1>;
+          }
+
+          return (
+            <div
+              className={`chat d-f ${
+                data.chatId === chat[0] ? "selected" : ""
+              }`}
+              key={chat[0]}
+              onClick={() => handleSelect(chat[1].userInfo)}
+            >
+              <div className="chat__img_container">
+                <img
+                  className="pfp"
+                  src={chat[1].userInfo.photoURL}
+                  alt="pfp"
+                />
               </div>
-              <div className="chat__time">{chat[1].date !== null && getDate(chat[1].date)}</div>
+              <div className="chat__infos d-f s-b">
+                <div className="chat__preview">
+                  <h1>{chat[1].userInfo.displayName}</h1>
+                  <p
+                    className={`${
+                      chat[1].lastMessage?.text === "Photo" ? "photo" : ""
+                    }`}
+                  >
+                    {chat[1].lastMessage?.text}
+                  </p>
+                </div>
+                <div className="chat__time">
+                  {chat[1].date !== null && getDate(chat[1].date)}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
     </div>
   );
 }

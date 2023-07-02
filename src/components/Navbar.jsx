@@ -8,6 +8,7 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../context/AuthContext";
+import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
 import SearchList from "./SearchList";
 import "./styles/navbar.scss";
@@ -15,12 +16,12 @@ import "./styles/navbar.scss";
 export default function Navbar() {
     const [username, setUsername] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const [active, setActive] = useState("");
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState("");
     const inputRef = useRef(null);
     const lastQuery = useRef("");
     const { currentUser } = useContext(AuthContext);
+    const { active, setActive } = useContext(ChatContext);
 
     const handleInputChange = (e) => {
       setUsername(e.target.value.toLowerCase());

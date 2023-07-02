@@ -12,8 +12,7 @@ export default function Messages() {
   const { data, imgModalVisible } = useContext(ChatContext);
   const [messages, setMessages] = useState([]);
   const [showContextMenu, setShowContextMenu] = useState(false);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
@@ -28,12 +27,22 @@ export default function Messages() {
   const handleContextMenu = (e) => {
     e.preventDefault();
     setShowContextMenu(true);
-    setX(e.clientX); setY(e.clientY);
+    const menuX = e.clientX - e.currentTarget.getBoundingClientRect().left;
+    const menuY = e.clientY - e.currentTarget.getBoundingClientRect().top;
+    setMenuPosition({ x: menuX, y: menuY });
+  };
+
+  const handleMouseClick = () => {
+    setShowContextMenu(false);
   };
 
   return (
     <>
-      <main className="messages_container" onContextMenu={handleContextMenu}>
+      <main
+        className="messages_container"
+        onContextMenu={handleContextMenu}
+        onClick={handleMouseClick}
+      >
         <div id="messages_container">
           {messages.map((m) => (
             <Message message={m} key={m.id} />
@@ -44,8 +53,11 @@ export default function Messages() {
       </main>
       <ChatInputs />
       {showContextMenu && (
-        <ContextMenu pos={{ x, y }} onClose={() => setShowContextMenu(false)} />
+        <ContextMenu
+          pos={menuPosition}
+          onClose={() => setShowContextMenu(false)}
+        />
       )}
     </>
   );
-};
+}

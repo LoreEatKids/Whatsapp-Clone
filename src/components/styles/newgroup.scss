@@ -1,0 +1,154 @@
+@import "../../styles/main";
+
+.group_container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  
+  h1,
+  svg {
+    color: $group-text-grey-color;
+    font-size: 19px;
+  }
+
+  img {
+    @include pfpChats;
+  }
+
+  ul {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin-top: 30px;
+
+    li {
+      margin-bottom: 10px;
+      cursor: pointer;
+      padding: 10px;
+      width: 100%;
+      padding: 10px 30px;
+
+      &:hover {
+        background-color: $chat-hover-color;
+      }
+
+      .infos_container {
+        margin-left: 20px;
+
+        h3 {
+          color: $white;
+        }
+
+        p {
+          font-size: 15px;
+          margin-top: 2px;
+          font-style: italic;
+          color: $input-grey-color;
+        }
+      }
+    }
+  }
+
+  .group_infos {
+    justify-content: flex-end;
+    flex-direction: column;
+    height: 108px;
+    background-color: $sidebar-background;
+    padding: 0 22px;
+    padding-bottom: 15px;
+
+    &-wrapper {
+      width: 100%;
+
+      div {
+        width: 54px;
+      }
+    }
+  }
+
+  .group_selected_users {
+    max-width: 100%;
+    padding: 0 38px;
+    padding-bottom: 12px;
+    padding-top: 34px;
+    background-color: $home-background;
+    gap: 15px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    .selected_user {
+      flex-basis: calc(
+        25% - 15px
+      ); /* Imposta la larghezza di ogni elemento su 25% con uno spazio di 15px tra di loro */
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 9999px;
+      }
+
+      .user_info {
+        margin-left: 10px;
+
+        h1 {
+          font-size: 14px;
+          color: $dropdown-text-color;
+          margin-right: 5px;
+        }
+
+        svg {
+          color: $chat-preview-color;
+
+          &:hover {
+            background-color: $white;
+            border-radius: 9999px;
+          }
+        }
+      }
+    }
+  }
+
+  .group_users {
+    background-color: $home-background;
+    flex-grow: 1;
+    overflow: scroll;
+    padding: 35px 0;
+    @include vertical-align;
+  }
+
+  .group_results {
+    position: absolute;
+    left: 24vh;
+    top: 60vh;
+  }
+
+  .group_create {
+    position: absolute;
+    left: 46%;
+    bottom: 10%;
+    background-color: $active-tab-marker;
+    border-radius: 9999px;
+    padding: 8px;
+    cursor: pointer;
+  }
+}
+
+ input.group {
+      color: $white;
+      font-size: 15px;
+      border-bottom: 1px solid rgba(134, 150, 160, 0.15);
+      padding-bottom: 2px;
+      width: 90%;
+      align-self: center;
+      margin-left: 30px;
+
+      &::placeholder {
+        color: $group-placeholder-grey-color;
+      }
+    }
