@@ -182,7 +182,7 @@ export default function SignupForm() {
             Create new account<span>.</span>
           </h1>
           <p>
-            Already a member? <Link to="/login">Sign up</Link>
+            Already a member? <Link to="/login">Sign in</Link>
           </p>
         </div>
         <div className="form_inputs">

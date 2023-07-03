@@ -11,13 +11,10 @@ import "./styles/newgroupsettings.scss";
 export default function NewGroupSettings(props) {
     const [groupImg, setGroupImg] = useState(null);
     const [groupImgUrl, setGroupImgUrl] = useState("");
-    const [imgUrl, setImgUrl] = useState(null);
     const [err, setErr] = useState("");
     const [groupName, setGroupName] = useState("");
     const { currentUser } = useContext(AuthContext);
     const { selectedUsers } = useContext(ChatContext);
-
-    console.log(imgUrl)
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -33,32 +30,19 @@ export default function NewGroupSettings(props) {
     const handleGoBack = () => {
         props.setSettingsActive(false);
         setGroupImg(null);
-        setImgUrl(null);
         setGroupName("");
         setGroupImgUrl("");
     }
 
-    function getCombinedIds() {
-      let combinedId = "";
-
-      selectedUsers.forEach((currentUser, i) => {
-        const remainingUsers = selectedUsers.slice(i + 1);
-
-        remainingUsers.forEach((user) => {
-          const ids =
-            typeof currentUser.uid === "string" && typeof user.uid === "string"
-              ? currentUser.uid + user.uid
-              : user.uid + currentUser.uid;
-
-          combinedId += ids;
-        });
-      });
+    const getGroupCombinedIds = (users) => {
+      const userIds = users.map((user) => user.uid);
+      const combinedId = userIds.sort().join("");
 
       return combinedId;
     }
-
+    
     const createNewGroup = async () => {
-      const combinedId = getCombinedIds().toString();
+      const combinedId = getGroupCombinedIds([...selectedUsers, currentUser]);
       const res = await getDoc(doc(db, "chats", combinedId));
       const groupUsers = [...selectedUsers, currentUser].map((user) => {
         return {
@@ -69,17 +53,15 @@ export default function NewGroupSettings(props) {
       });
 
       if (!res.exists()) {
+        await setDoc(doc(db, "chats", combinedId), {
+          type: "group",
+          messages: [],
+        });
         if (groupImg) {
-          const storageRef = ref(storage, `chatImgs/${uuid()}`);
+          const storageRef = ref(storage, `groupPfps/${uuid()}`);
 
           await uploadBytesResumable(storageRef, groupImg).then(async () => {
             const downloadUrl = await getDownloadURL(storageRef);
-            setImgUrl(downloadUrl);
-
-            await setDoc(doc(db, "chats", combinedId), {
-              type: "group",
-              messages: [],
-            });
 
             const batch = writeBatch(db);
 
@@ -92,7 +74,7 @@ export default function NewGroupSettings(props) {
                     type: "group",
                     groupName: groupName,
                     groupUsers: groupUsers,
-                    groupImg: imgUrl || "",
+                    groupImg: downloadUrl, // Assegna l'URL dell'immagine al campo groupImg
                     date: serverTimestamp(),
                   },
                 },
@@ -119,7 +101,7 @@ export default function NewGroupSettings(props) {
                   type: "group",
                   groupName: groupName,
                   groupUsers: groupUsers,
-                  groupImg: imgUrl || "",
+                  groupImg: null, // Assegna null al campo groupImg
                   date: serverTimestamp(),
                 },
               },
@@ -127,8 +109,7 @@ export default function NewGroupSettings(props) {
             );
           }
 
-          // Commit the batch write
-          await commitBatch(batch);
+          await batch.commit();
         }
         
         handleGoBack();
@@ -138,7 +119,6 @@ export default function NewGroupSettings(props) {
         return;
       }
     };
-
 
     return (
       <div className="group_container settings">

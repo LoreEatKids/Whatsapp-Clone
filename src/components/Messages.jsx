@@ -24,6 +24,10 @@ export default function Messages() {
     };
   }, [data.chatId]);
 
+  useEffect(() => {
+    setMessages([]);
+  }, [data.chatId]);
+
   const handleContextMenu = (e) => {
     e.preventDefault();
     setShowContextMenu(true);

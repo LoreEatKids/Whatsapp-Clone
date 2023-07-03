@@ -5,13 +5,45 @@
     padding: 15px 69px;
     position: relative;
 
+    .message_usergroup_pfg {
+        img {
+            width: 28px;
+            height: 28px;
+            object-fit: cover;
+            border-radius: 9999px;
+        }
+    }
+
+    .message_grouptype .message_svg {
+        &.owner {
+            right: unset;
+            top: 12.4px;
+        }
+
+        &.user {
+            left: 102.5px;
+        }
+    }
+
     &.user {
         width: 100%;
+
+        .message_usergroup_pfg {
+            padding-right: 10px;
+        }
     }
 
     &.owner {
         display: flex;
         justify-content: flex-end;
+
+        .message_usergroup_pfg {
+            padding-left: 10px;
+        }
+
+        .message_container {
+            flex-direction: row-reverse;
+        }
     }
 
     .message_svg {
@@ -28,8 +60,8 @@
         }
 
         &.owner {
-            right: 6.3vh;
-            top: 1.3vh;
+            right: 5.5%;
+            top: 12.5px;
         }
 
         svg {  
@@ -48,6 +80,8 @@
         font-size: 14px;
         color: $white;
         word-wrap: anywhere;
+
+        &.fixed { max-width: 95%; }
 
         &.user {
             background-color: $incoming-background;

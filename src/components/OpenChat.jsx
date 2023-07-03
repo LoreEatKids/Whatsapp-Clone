@@ -11,7 +11,8 @@ export default function Chat() {
     const [imgDragModal, setImgDragModal] = useState(false);
     const lastMessageRef = useRef(null);
     const mainRef = useRef(null);
-    const dataLenght = Object.entries(data.user)?.length;
+    const chatDataLenght = Object.entries(data.user)?.length;
+    const groupDataLenght = Object.entries(data.group)?.length;
 
     useEffect(() => {
       setShowContactInfo(true);
@@ -20,44 +21,17 @@ export default function Chat() {
       }, 2000);
 
       return () => clearTimeout(timer);
-    }, [data.user]);
+    }, [data.chatId]);
 
     useEffect(() => {
-      if (Object.entries(data.user).length !== 0) {
+      if (chatDataLenght !== 0 || groupDataLenght) {
         setIsLoading(false);
-      }
-    }, [data.user]);
 
-    useEffect(() => {
-      if (dataLenght !== 0) {
-        setIsLoading(false);
         if (lastMessageRef.current) {
           lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
         }
       }
-    }, [data.user]);
-
-    // useEffect(() => {
-    //   const handleDragOver = (event) => {
-    //     event.preventDefault();
-
-    //     const dataTransfer = event.dataTransfer;
-    //     console.log(dataTransfer.files && dataTransfer.files.length > 0);
-
-    //     if(dataTransfer.files && dataTransfer.files.length > 0) {
-    //       const file = dataTransfer.files[0];
-    //       setImg(file);
-    //       setImgModalVisible([true, URL.createObjectURL(file)]);
-    //     }
-    //   };
-
-    //   const mainElement = mainRef.current;
-    //   mainElement.addEventListener("dragover", handleDragOver);
-
-    //   return () => {
-    //     mainElement.removeEventListener("dragover", handleDragOver);
-    //   };
-    // }, []);
+    }, [data.chatId]);
 
     const handleDrop = (event) => {
       event.preventDefault();
@@ -85,7 +59,7 @@ export default function Chat() {
     const handleDragLeave = () => {
       setImgDragModal(false);
     } 
-
+    
     return (
       <main
         className="chat"
@@ -94,17 +68,41 @@ export default function Chat() {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
       >
-        {dataLenght !== 0 && !isLoading ? (
+        {(chatDataLenght !== 0 || groupDataLenght !== 0) && !isLoading ? (
           <header className="d-f s-b">
-            <div className="pfp_container d-f">
-              <img src={data.user.photoURL} alt="" className="pfp"></img>
-              <div className="user_infos">
-                <h1>{data.user?.displayName}</h1>
-                {showContactInfo && (
-                  <p className="infos">clicca qui per info contatto</p>
-                )}
+            {chatDataLenght !== 0 && (
+              <div className="pfp_container d-f">
+                <img src={data.user.photoURL} alt="" className="pfp"></img>
+                <div className="user_infos">
+                  <h1>{data.user?.displayName}</h1>
+                  {showContactInfo && (
+                    <p className="infos">clicca qui per info contatto</p>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+
+            {groupDataLenght !== 0 && (
+              <div className="pfp_container d-f">
+                <img src={data.group.groupImg} className="pfp" />
+                <div className="user_infos">
+                  <h1>{data.group.groupName}</h1>
+                  {showContactInfo && (
+                    <p className="infos">clicca qui per info contatto</p>
+                  )}
+                  {!showContactInfo && (
+                    <p className="infos">
+                      {data.group.groupUsers.map((user, index) => (
+                        <span key={user.uid}>
+                          {user.displayName}
+                          {index !== data.group.groupUsers.length - 1 ? ", " : ""}
+                        </span>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="icons_container d-f">
               <svg viewBox="0 0 24 24" height="24" width="24">
@@ -129,9 +127,9 @@ export default function Chat() {
           <h1>Drag Your File Here</h1>
         </div>
 
-        {dataLenght !== 0 && !isLoading && !imgDragModal && (
-          <Messages lastMessageRef={lastMessageRef} />
-        )}
+        {(chatDataLenght !== 0 || groupDataLenght !== 0) &&
+          !isLoading &&
+          !imgDragModal && <Messages lastMessageRef={lastMessageRef} />}
       </main>
     );
 };
