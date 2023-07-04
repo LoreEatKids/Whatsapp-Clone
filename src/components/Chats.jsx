@@ -7,8 +7,7 @@ import "./styles/chats.scss";
 
 export default function Chats() {
   const { currentUser } = useContext(AuthContext);
-  const { dispatch, data } = useContext(ChatContext);
-  const [chats, setChats] = useState([]);
+  const { dispatch, data, chats, setChats } = useContext(ChatContext);
 
   useEffect(() => {
     const getChats = () => {

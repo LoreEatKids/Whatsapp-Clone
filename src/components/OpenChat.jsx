@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import Messages from "./Messages";
 import NoOpenChat from "./NoOpenChat";
@@ -6,11 +7,15 @@ import "./styles/OpenChat.scss";
 
 export default function Chat() {
     const {data, setImgModalVisible, setImg} = useContext(ChatContext);
+    const {currentUser} = useContext(AuthContext);
+    
     const [showContactInfo, setShowContactInfo] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [imgDragModal, setImgDragModal] = useState(false);
+
     const lastMessageRef = useRef(null);
     const mainRef = useRef(null);
+
     const chatDataLenght = Object.entries(data.user)?.length;
     const groupDataLenght = Object.entries(data.group)?.length;
 
@@ -94,7 +99,7 @@ export default function Chat() {
                     <p className="infos">
                       {data.group.groupUsers.map((user, index) => (
                         <span key={user.uid}>
-                          {user.displayName}
+                          {user.displayName !== currentUser.displayName ? user.displayName : "you"}
                           {index !== data.group.groupUsers.length - 1 ? ", " : ""}
                         </span>
                       ))}

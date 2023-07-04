@@ -37,7 +37,6 @@ export default function NewGroupSettings(props) {
     const getGroupCombinedIds = (users) => {
       const userIds = users.map((user) => user.uid);
       const combinedId = userIds.sort().join("");
-
       return combinedId;
     }
     

@@ -18,7 +18,8 @@
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.12.1",
     "sass": "^1.63.3",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "waveform-data": "^4.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

@@ -3,7 +3,6 @@ import { ChatContext } from "../context/ChatContext";
 import "./styles/contextmenu.scss";
 
 export default function ContextMenu({ pos, onClose }) {
-  console.log(pos)
   const ref = useRef();
   const { dispatch } = useContext(ChatContext);
 

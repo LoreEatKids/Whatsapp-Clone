@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { ACTION_TYPES } from "./postActionTypes";
 
 
@@ -16,6 +14,10 @@ const getGroupCombinedIds = (users) => {
   return combinedId;
 };
 
+const deleteChat = (selectedChat) => {
+  console.log(selectedChat);
+}
+
 export const chatReducer = (state, action, currentUser) => {
   switch (action.type) {
     case ACTION_TYPES.CHANGE_USER:
@@ -30,11 +32,13 @@ export const chatReducer = (state, action, currentUser) => {
     case ACTION_TYPES.CHANGE_GROUP:
       return {
         user: {},
-        // chatId: getGroupCombinedIds([...action.payload.groupUsers, currentUser]),
-        chatId: getGroupCombinedIds([...action.payload.groupUsers]),
         group: action.payload,
+        chatId: getGroupCombinedIds([...action.payload.groupUsers]),
       };
     case ACTION_TYPES.RESET_CHAT:
+      return INITIAL_STATE;
+    case ACTION_TYPES.DELETE_CHAT:
+      deleteChat(action.payload);
       return INITIAL_STATE;
     default:
       return state;

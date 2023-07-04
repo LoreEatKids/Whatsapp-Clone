@@ -32,7 +32,7 @@ export default function Message({ message }) {
           {groupContext > 0 && 
             <div className="message_grouptype">
               <div className="message_usergroup_pfg">
-                <img src={senderUser.photoURL} width="28px" height="28px" />
+                <img src={senderUser?.photoURL} width="28px" height="28px" />
               </div>
 
               <div className={`message_svg ${messageOwner}`}>

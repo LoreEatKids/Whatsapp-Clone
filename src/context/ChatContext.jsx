@@ -17,6 +17,7 @@ export const ChatContextProvider = ({ children }) => {
   const [active, setActive] = useState(false);
   const [selectedUsers, setSelectedUser] = useState([]);
   const [img, setImg] = useState(null);
+  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     dispatch({ type: ACTION_TYPES.RESET_CHAT });
@@ -40,6 +41,7 @@ export const ChatContextProvider = ({ children }) => {
         setActive,
         selectedUsers,
         setSelectedUser,
+        chats, setChats
       }}
     >
       {children}
