@@ -9,12 +9,16 @@
 
   .chat {
     width: 100%;
-    height: 72px;
+    height: 79px;
     padding: 14px;
     cursor: pointer;
     &:hover,
     &.selected {
       background-color: $chat-hover-color;
+    }
+
+    &:hover .chat__remove {
+      visibility: visible !important;
     }
 
     &__img_container {
@@ -33,12 +37,22 @@
       max-height: 100%;
       overflow: hidden;
 
-      .chat__time {
-        font-size: 12px;
-        padding-left: 20px;
-        color: $chat-preview-color;
-        padding-bottom: 20px;
+      .chat__menage {
+        text-align: right;
+
+        .chat__time {
+          font-size: 12px;
+          padding-left: 20px;
+          padding-bottom: 5px;
+          color: $chat-preview-color;
+        }
+
+        .chat__remove {
+          visibility: hidden;
+          svg { height: .90rem !important; }
+        }
       }
+
 
       .chat__preview {
         width: 100%;

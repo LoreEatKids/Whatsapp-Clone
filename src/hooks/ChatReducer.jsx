@@ -1,6 +1,5 @@
 import { ACTION_TYPES } from "./postActionTypes";
 
-
 export const INITIAL_STATE = {
   chatId: "null",
   user: {},
@@ -13,10 +12,6 @@ const getGroupCombinedIds = (users) => {
 
   return combinedId;
 };
-
-const deleteChat = (selectedChat) => {
-  console.log(selectedChat);
-}
 
 export const chatReducer = (state, action, currentUser) => {
   switch (action.type) {
@@ -36,9 +31,6 @@ export const chatReducer = (state, action, currentUser) => {
         chatId: getGroupCombinedIds([...action.payload.groupUsers]),
       };
     case ACTION_TYPES.RESET_CHAT:
-      return INITIAL_STATE;
-    case ACTION_TYPES.DELETE_CHAT:
-      deleteChat(action.payload);
       return INITIAL_STATE;
     default:
       return state;

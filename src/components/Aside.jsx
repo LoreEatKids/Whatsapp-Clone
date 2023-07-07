@@ -17,10 +17,11 @@ export default function Aside() {
     const [groupSearchResults, setGroupSearchResults] = useState([]);
     const [groupMenuActive, setGroupMenuActive] = useState(false);
     const [groupSettingsActive, setGroupSettingsActive] = useState(false);
-    const {setActive} = useContext(ChatContext);
+    const {setActive, setChats} = useContext(ChatContext);
 
     const handleLogout = async () => {
         await signOut(auth);
+        setChats([]);
         navigate("/register");
         toast.success("Successfully logout");
     }

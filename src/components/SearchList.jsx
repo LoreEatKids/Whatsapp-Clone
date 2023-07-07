@@ -4,8 +4,8 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
-} from "firebase/firestore"; // Add 'doc' import
-import { useContext, useEffect } from "react";
+} from "firebase/firestore";
+import { useContext } from "react";
 import { toast } from "react-hot-toast";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
@@ -22,7 +22,7 @@ export default function SearchList({
   handleCloseSearchList,
 }) {
   const { currentUser } = useContext(AuthContext);
-  const { chats } = useContext(ChatContext);
+  const { chats, dispatch } = useContext(ChatContext);
   const chatsKeys = Object.keys(chats);
   const chatsToArr = Object.entries(chats);
 
@@ -45,7 +45,7 @@ export default function SearchList({
     try {
       const res = await getDoc(doc(db, "chats", combinedId));
 
-      if (!res.exists()) {
+      if (!res.exists()) { // chat doesn't exist so create a new one with no messages and update existing chats for both users
         await setDoc(doc(db, "chats", combinedId), { messages: [] });
 
         await updateDoc(doc(db, "userChats", currentUser.uid), {
@@ -57,6 +57,7 @@ export default function SearchList({
           [combinedId + ".date"]: serverTimestamp(),
         });
 
+
         await updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
@@ -65,16 +66,17 @@ export default function SearchList({
           },
           [combinedId + ".date"]: serverTimestamp(),
         });
+      } else { // user exists so change chatid
+        dispatch({ type: "CHANGE_USER", payload: user }) 
       }
       
-      toast.success("Started New Conversation");
+      !userAlreadyExists(user)[0] && toast.success("Started New Conversation");
       handleCloseSearchList();
     } catch (error) {
       setErr(error);
       console.error(err);
       toast.error("Something Went Wrong");
     }}
-
   const users = results.map((user) => {
     const [exists, chat] = userAlreadyExists(user);
     const lastMessage = exists && chat ? chat[1].lastMessage?.text : "Start a New Conversation";
