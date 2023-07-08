@@ -6,6 +6,8 @@ App created With:
   <li>Firebase Auth + Firestore + Firebase</li>
 </ul>
 
+![alt "Preview Img"](https://github.com/LoreEatKids/whatsapp-clone/blob/main/preview.png?raw=true)
+
 <h1>Features</h1>
 <ul>
    <li>Create a user interface that closely resembles Whatsapp, with a meticulously designed layout that strives for pixel-perfection.</li>
@@ -16,6 +18,3 @@ App created With:
   <li>Implement the ability to delete chats, providing users with the option to remove conversations as needed.</li>
   <li>Enhance the user experience with context menu options for open chats, offering convenient access to additional actions and functionalities.</li>
 </ul>
-
-<h1>Preview</h1>
-![alt "Preview img"](https://github.com/LoreEatKids/whatsapp-clone/blob/main/preview.png?raw=true)
