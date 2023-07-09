@@ -1,8 +1,7 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteDoc, deleteField, doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
@@ -10,7 +9,7 @@ import "./styles/chats.scss";
 
 export default function Chats() {
   const { currentUser } = useContext(AuthContext);
-  const { dispatch, data, chats, setChats } = useContext(ChatContext);
+  const { dispatch, data, chats, setChats, handleDeleteChat } = useContext(ChatContext);
 
   useEffect(() => {
     const getChats = () => {
@@ -35,28 +34,6 @@ export default function Chats() {
 
   const handleGroupSelect = (group) => {
     dispatch({ type: "CHANGE_GROUP", payload: group });
-  }
-
-  const handleDeleteChat =  async (selectedChat) => {
-    const selectedChatId = selectedChat[0];
-    const currUserRef = doc(db, "userChats", currentUser.uid);
-    const userRef = doc(db, "userChats", selectedChat[1].userInfo.uid);
-
-    try {
-      await deleteDoc(doc(db, "chats", selectedChatId));
-      await updateDoc(currUserRef, {
-        [selectedChatId]: deleteField(),
-      });
-      await updateDoc(userRef, {
-        [selectedChatId]: deleteField(),
-      });
-
-      dispatch({ type: "RESET_CHAT" });
-    } catch (error) {
-      console.error(error);
-      toast.error("Something Went Wrong")
-      throw new Error("Something Went Wrong");
-    }
   }
 
   const handleDeleteGroup = async (selectedGroup) => {

@@ -2,7 +2,8 @@
 
 aside {
     background-color: $sidebar-background;
-    width: clamp(478px, 478px, 478px);
+    width: 478px;
+    min-width: 478px;
     position: relative;
 
     header {

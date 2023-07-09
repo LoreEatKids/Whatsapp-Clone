@@ -4,7 +4,7 @@ import "./styles/contextmenu.scss";
 
 export default function ContextMenu({ pos, onClose }) {
   const ref = useRef();
-  const { dispatch } = useContext(ChatContext);
+  const { dispatch, setUseInfosMenuActive } = useContext(ChatContext);
 
   useEffect(() => {
     const setContextMenuPos = () => {
@@ -41,12 +41,19 @@ export default function ContextMenu({ pos, onClose }) {
     return () => document.removeEventListener("click", handleContextMenuClose);
   }, [pos]);
 
-  const handleCloseChat = () => dispatch({ type: "RESET_CHAT" });
+  const handleCloseChat = () => {
+    dispatch({ type: "RESET_CHAT" });
+    onClose();
+  }
+  const handleActiveUserInfos = () => {
+    setUseInfosMenuActive(true);
+    onClose();
+  }
 
   return (
     <div className="contextmenu" ref={ref}>
       <ul>
-        <li>Contact's Infos</li>
+        <li onClick={handleActiveUserInfos}>Contact's Infos</li>
         <li onClick={handleCloseChat}>Close conversation</li>
         <li>Block user</li>
       </ul>

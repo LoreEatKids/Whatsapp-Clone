@@ -2,7 +2,7 @@
 
 .row {
     width: 100%;
-    padding: 15px 69px;
+    padding: 2px 69px 2px 69px !important;
     position: relative;
 
     .message_usergroup_pfg {
@@ -17,11 +17,12 @@
     .message_grouptype .message_svg {
         &.owner {
             right: unset;
-            top: 12.4px;
+            top: -0.6px;
         }
 
         &.user {
-            left: 102.5px;
+            left: 101.5px;
+            top: -0.5px;
         }
     }
 
@@ -55,13 +56,17 @@
 
         &.user {
             rotate: 90deg;
-            top: 12.5px;
+            top: -0.6px;
             left: 63.5px;
+
+            &.userInfosIsActive {
+                right: 9.5% !important;
+            }
         }
 
         &.owner {
-            right: 5.5%;
-            top: 12.5px;
+            right: 5.45%;
+            top: -0.5px;    
         }
 
         svg {  
@@ -120,7 +125,7 @@
             img {
                 margin-bottom: 15px;
                 max-width: 100%;
-                max-height: 300px; /* Imposta l'altezza massima desiderata per le immagini */
+                max-height: 300px;
                 cursor: pointer;
 
                 &.noText { margin-bottom: 0 !important; }

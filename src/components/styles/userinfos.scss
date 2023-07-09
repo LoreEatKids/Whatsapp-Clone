@@ -1,0 +1,100 @@
+@import "../../styles/main";
+
+.userinfos_container {
+    width: 52%;
+    border-left: 1px solid $user-info-border;
+
+    h1 { 
+        color: $white; 
+        &.title { margin-left: 30px; }
+    }
+
+    header {
+        padding: 8px 27px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        background-color: $main-background
+    }
+    
+    .user_pfp_container {
+        justify-content: center;
+        margin-top: 28px;
+
+        img {
+            width: 200px; height: 200px;
+            object-fit: cover;
+            border-radius: 9999px;
+            cursor: pointer;
+        }
+    }
+
+    .user_username {
+        justify-content: center;
+        margin-top: 15px;
+        h1 { 
+            font-size: 20px; 
+            color: $user-info-username-color;
+        }
+    }
+
+    .user_messages {
+        margin-top: 25px;
+        padding: 20px 27px;
+        border-top: 8px solid $user-info-divider;
+        border-bottom: 8px solid $user-info-divider;
+
+        &_container {
+            &:not(:first-child) { margin-top: 3px; }
+            &_svg {
+                justify-content: space-between;     
+                div { gap: 10px; }
+            }
+
+            &.medias { cursor: pointer; }
+        }
+        
+        p, svg {
+            font-size: 15px;
+            color: $user-info-messages-color;
+        }
+
+        .medias_container {
+            width: 100%;
+
+            &-imgs {
+                justify-content: center;
+                margin: 15px 0;
+                gap: 10px;
+
+                img {
+                    width: 120px;
+                    height: 120px;
+                    object-fit: cover;
+                    padding: 10px;
+                    border: 10px solid $user-info-media-border-color;
+                    border-radius: 20px;
+                }
+            }
+        }
+    }
+
+    .user_controls {
+        margin-top: 15px;
+
+        * { 
+            color: $user-info-danger-zone-color; 
+            font-size: 16px;
+        }
+
+        .user_control {
+            gap: 20px;
+            cursor: pointer;
+            padding: 15px 27px;
+
+            &:hover {
+                background-color: $user-info-danger-zone-hover-color;
+            }
+        }
+    }
+}
