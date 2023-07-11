@@ -22,6 +22,7 @@ export const ChatContextProvider = ({ children }) => {
   const [img, setImg] = useState(null);
   const [chats, setChats] = useState([]);
   const [userInfosMenuActive, setUseInfosMenuActive] = useState(false);
+  const [userInfosMediaMenuActive, setUserInfosMediaMenuActive] = useState(false);
 
   const handleDeleteChat = async (selectedChat) => {
     const selectedChatId = selectedChat[0];
@@ -69,7 +70,8 @@ export const ChatContextProvider = ({ children }) => {
         setSelectedUser,
         chats, setChats,
         handleDeleteChat,
-        userInfosMenuActive, setUseInfosMenuActive
+        userInfosMenuActive, setUseInfosMenuActive,
+        userInfosMediaMenuActive, setUserInfosMediaMenuActive
       }}>
       {children}
     </ChatContext.Provider>

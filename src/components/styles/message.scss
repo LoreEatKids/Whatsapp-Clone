@@ -1,5 +1,10 @@
 @import "../../styles/main.scss";
 
+.link {
+    color: $message-link-color;
+    text-decoration: underline;
+}
+
 .row {
     width: 100%;
     padding: 2px 69px 2px 69px !important;
@@ -65,7 +70,7 @@
         }
 
         &.owner {
-            right: 5.45%;
+            right: 61px;
             top: -0.5px;    
         }
 

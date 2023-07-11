@@ -1,8 +1,17 @@
 @import "../../styles/main";
 
+ul li { list-style: none; }
+
+@mixin headerStyle {
+    padding: 8px 27px;
+    height: 60px;
+} 
+
 .userinfos_container {
     width: 52%;
     border-left: 1px solid $user-info-border;
+    position: relative;
+    overflow: scroll;
 
     h1 { 
         color: $white; 
@@ -10,8 +19,7 @@
     }
 
     header {
-        padding: 8px 27px;
-        height: 60px;
+        @include headerStyle;
         display: flex;
         align-items: center;
         background-color: $main-background
@@ -95,6 +103,113 @@
             &:hover {
                 background-color: $user-info-danger-zone-hover-color;
             }
+        }
+    }
+}
+
+.userinfos_media_container {
+    background-color: $user-info-media-menu-bg-color;
+    position: absolute;
+    top: 0;
+    height: 100%; width: 100%;
+
+    .submenu {
+        height: 50px;
+        justify-content: center;
+        text-align: center;
+        background-color: $main-background;
+
+        .tab {
+            justify-content: center;
+            width: 120px;
+            height: inherit;
+            font-size: 14px;
+            color: $user-fino-media-menu-tab-color;
+            cursor: pointer;
+            box-sizing: border-box;
+            
+            &.active {
+                color: $active-tab-marker;
+                border-bottom: 4px solid $active-tab-marker;
+            }
+        }
+    }
+
+    main {
+        ul {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            padding: 8px 27px;
+            margin-top: 20px;
+
+            img {
+                object-fit: cover;
+                cursor: pointer;
+                border: 10px solid $user-info-media-border-color;
+            }
+        }
+
+        .link_container {
+            border-bottom: 1px solid $chat-border;
+            &:hover { background-color: $user-info-media-links-border-color; }
+            cursor: pointer;
+            padding: 20px;
+            position: relative;
+
+            &.owner {
+                display: flex;
+                justify-content: end;
+            }
+
+            .link_item {
+                font-size: 14px !important;
+                border-radius: 7.5px;
+                padding: 8px 10px;
+                word-wrap: anywhere;
+
+                &.owner { 
+                    background-color: $outgoing-background;
+                    border-top-right-radius: 0;
+                }
+                &.user { 
+                    background-color: $incoming-background; 
+                    border-top-left-radius: 0;
+                }
+                
+                .link {
+                    color: $message-link-color !important;
+                }
+            }
+
+            .message_svg {
+                position: absolute;
+                &.owner {
+                    top: 17.3px;
+                    right: 11.8px;
+
+                    svg {color: $outgoing-background;}
+                }
+
+                &.user {
+                    top: 8px;
+                    rotate: 90deg;
+                    left: 12px;
+                    svg {color: $incoming-background;}
+                }
+            }
+        }
+    }
+
+    .no_medias {
+        position: absolute;
+        position: absolute;
+        top: 51%;
+        left: 43%;
+
+        h1 {
+            font-size: 14px;
+            color: $user-info-media-menu-nomedia-color;
         }
     }
 }

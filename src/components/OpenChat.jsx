@@ -7,7 +7,14 @@ import Userinfos from "./Userinfos";
 import "./styles/OpenChat.scss";
 
 export default function Chat() {
-    const {data, setImgModalVisible, setImg, userInfosMenuActive, setUseInfosMenuActive} = useContext(ChatContext);
+    const {
+      data,
+      setImgModalVisible,
+      setImg,
+      userInfosMenuActive,
+      setUseInfosMenuActive,
+      setUserInfosMediaMenuActive,
+    } = useContext(ChatContext);
     const {currentUser} = useContext(AuthContext);
     
     const [showContactInfo, setShowContactInfo] = useState(false);
@@ -24,6 +31,7 @@ export default function Chat() {
       setShowContactInfo(true);
       const timer = setTimeout(() => {
         setShowContactInfo(false);
+        setUserInfosMediaMenuActive(false);
       }, 2000);
 
       return () => {
