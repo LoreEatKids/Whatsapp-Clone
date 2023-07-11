@@ -3,7 +3,7 @@ whatsapp clone using react and firebase
 App created With:
 <ul>
   <li>React (jsx)</li>
-  <li>Firebase Auth + Firestore + Firebase</li>
+  <li>Firebase Auth + Firestore + Firebase Storage</li>
 </ul>
 
 ![alt "Preview Img"](https://github.com/LoreEatKids/whatsapp-clone/blob/main/preview.png?raw=true)
