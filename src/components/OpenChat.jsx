@@ -101,7 +101,7 @@ export default function Chat() {
                   <div className="user_infos">
                     <h1>{data.user?.displayName}</h1>
                     {showContactInfo && (
-                      <p className="infos">clicca qui per info contatto</p>
+                      <p className="infos">Click here to get this chat's infos</p>
                     )}
                   </div>
                 </div>
@@ -126,7 +126,7 @@ export default function Chat() {
                   <div className="user_infos">
                     <h1>{data.group.groupName}</h1>
                     {showContactInfo && (
-                      <p className="infos">clicca qui per info contatto</p>
+                      <p className="infos">Click here to get group chat infos</p>
                     )}
                     {!showContactInfo && (
                       <p className="infos">

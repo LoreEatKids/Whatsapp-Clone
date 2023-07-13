@@ -12,6 +12,7 @@
     height: 79px;
     padding: 14px;
     cursor: pointer;
+    position: relative;
     &:hover,
     &.selected {
       background-color: $chat-hover-color;
@@ -67,6 +68,21 @@
 
           &.photo { font-style: italic; }
         }
+      }
+
+      .chat_status {
+        position: absolute;
+        left: 53px;
+        top: 50px;
+
+        div {
+          border-radius: 9999px;
+          width: 13px;
+          height: 13px;
+        }
+
+        .status_online { background-color: lightgreen;}
+        .status_offline { background-color: gray; }
       }
     }
   }

@@ -156,9 +156,9 @@ ul li { list-style: none; }
             cursor: pointer;
             padding: 20px;
             position: relative;
+            display: flex;
 
             &.owner {
-                display: flex;
                 justify-content: end;
             }
 
@@ -192,7 +192,7 @@ ul li { list-style: none; }
                 }
 
                 &.user {
-                    top: 8px;
+                    top: 14.5px;
                     rotate: 90deg;
                     left: 12px;
                     svg {color: $incoming-background;}

@@ -56,6 +56,7 @@ export default function SignupForm() {
               displayName: username,
               email,
               photoURL: downloadURL,
+              status: "online",
               usernameToLowerCase: username.toLowerCase(),
             });
 

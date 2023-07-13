@@ -1,9 +1,13 @@
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
+  query,
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { useContext } from "react";
 import { toast } from "react-hot-toast";
@@ -34,7 +38,6 @@ export default function SearchList({
         
     return combinedId;
   }
-
   const userAlreadyExists = (user) => {
     const combinedId = getCombinedId(user);
     return [chatsKeys.includes(combinedId), chatsToArr.find(chat => chat[0] === combinedId)];
@@ -57,7 +60,6 @@ export default function SearchList({
           [combinedId + ".date"]: serverTimestamp(),
         });
 
-
         await updateDoc(doc(db, "userChats", user.uid), {
           [combinedId + ".userInfo"]: {
             uid: currentUser.uid,
@@ -74,9 +76,9 @@ export default function SearchList({
       handleCloseSearchList();
     } catch (error) {
       setErr(error);
-      console.error(err);
-      toast.error("Something Went Wrong");
-    }}
+      console.error(error);
+  }}
+
   const users = results.map((user) => {
     const [exists, chat] = userAlreadyExists(user);
     const lastMessage = exists && chat ? chat[1].lastMessage?.text : "Start a New Conversation";
