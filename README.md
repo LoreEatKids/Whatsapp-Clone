@@ -18,3 +18,9 @@ App created With:
   <li>Implement the ability to delete chats, providing users with the option to remove conversations as needed.</li>
   <li>Enhance the user experience with context menu options for open chats, offering convenient access to additional actions and functionalities.</li>
 </ul>
+
+<h1>How to use this code</h1>
+
+- inside the project folder run ```node install-all.js```, this will install all the libraries inside each folder
+- create a ```.env.local``` file in /root/client/src and create all the needed firebase variables keys
+- Run: go inside the root folder and start ```npm run dev```
