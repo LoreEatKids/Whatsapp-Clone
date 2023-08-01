@@ -27,7 +27,15 @@
         }
     }
     svg { 
-        opacity: .7; 
-        &.filter { margin-right: 9px; }
+        opacity: 1; 
+        &.filter { 
+            margin-right: 8px;
+            &.active {
+                background-color: #00a884;
+                padding: 1px;
+                color: $white;
+                border-radius: 9999px;
+            }
+        }
     }
 }

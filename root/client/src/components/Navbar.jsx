@@ -21,7 +21,7 @@ export default function Navbar() {
     const inputRef = useRef(null);
     const lastQuery = useRef("");
     const { currentUser } = useContext(AuthContext);
-    const { active, setActive } = useContext(ChatContext);
+    const { active, setActive, filterChatActive, setFilterChatActive } = useContext(ChatContext);
 
     const handleInputChange = (e) => {
       setUsername(e.target.value.toLowerCase());
@@ -35,15 +35,6 @@ export default function Navbar() {
       setSearchResults([]);
       setErr("");
     };
-    
-    useEffect(() => {
-      if (searchResults.length >= 1) {
-        const usernames = searchResults.map((user) => user.username).join(", ");
-        toast.success(`Users found: ${usernames}`);
-      } else if (username !== "") {
-        toast.error("No User Found");
-      }
-    }, [searchResults]);
 
     useEffect(() => {
       const searchUsers = async () => {
@@ -127,7 +118,7 @@ export default function Navbar() {
             )}
           </div>
         </nav>
-        <svg className="filter" viewBox="0 0 24 24" height="20" width="20">
+        <svg className={`filter ${filterChatActive ? "active" : ""}`} viewBox="0 0 24 24" height="23" width="23" onClick={()=> setFilterChatActive(prev => !prev)}>
           <path
             fill="currentColor"
             d="M10,18.1h4v-2h-4V18.1z M3,6.1v2h18v-2H3z M6,13.1h12v-2H6V13.1z"

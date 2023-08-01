@@ -15,27 +15,27 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const setUserStatus = async (user, status) => {
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, { status: status });
+  }
 
   useEffect(() => {
     if(!currentUser) return;
-    const userRef = doc(db, "users", currentUser.uid);
 
     const handleDisconnect = async () => {
       try {
-        await updateDoc(userRef, { status: "offline" });
+        setUserStatus(currentUser, "offline");
       } catch (error) {
         console.error("Error updating user status:", error);
       }
     };
 
-    const cleanup = async () => {
-      await handleDisconnect();
-    };
-
-    window.addEventListener("beforeunload", cleanup);
+    window.addEventListener("beforeunload", handleDisconnect);
 
     return () => {
-      window.removeEventListener("beforeunload", cleanup);
+      window.removeEventListener("beforeunload", handleDisconnect);
     };
   }, [currentUser]);
 
@@ -44,17 +44,13 @@ export const AuthContextProvider = ({ children }) => {
       if (user) {
         setCurrentUser(user);
         setLoading(false);
-
         const userRef = doc(db, "users", user.uid);
-        const userStatus = "online";
 
         try {
           const userDoc = await getDoc(userRef);
-          if (userDoc.exists()) {
-            await updateDoc(userRef, { status: userStatus });
-          } else {
-            await setDoc(userRef, { status: userStatus });
-          }
+          userDoc.exists()
+            ? setUserStatus(user, "online")
+            : await setDoc(userRef, { status: "online" });
         } catch (error) {
           toast.error("Something Went Wrong: " + error);
         }
@@ -64,11 +60,8 @@ export const AuthContextProvider = ({ children }) => {
         setLoading(false);
 
         if (user && user.uid) {
-          const userRef = doc(db, "users", user.uid);
-          const userStatus = "offline";
-
           try {
-            await updateDoc(userRef, { status: userStatus });
+            setUserStatus(user, "offline");
           } catch (error) {
             toast.error("Something Went Wrong: " + error);
           }
@@ -76,9 +69,7 @@ export const AuthContextProvider = ({ children }) => {
       }
     });
 
-    return () => {
-      unsub();
-    };
+    return () => unsub();
   }, [currentUser]);
 
   return (

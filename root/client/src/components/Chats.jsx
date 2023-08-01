@@ -8,7 +8,7 @@ import "./styles/chats.scss";
 
 export default function Chats() {
   const { currentUser } = useContext(AuthContext);
-  const { dispatch, chats, setChats } = useContext(ChatContext);
+  const { dispatch, chats, setChats, filterChatActive } = useContext(ChatContext);
 
   useEffect(() => {
     const getChats = () => {
@@ -30,7 +30,7 @@ export default function Chats() {
   return (
     <div className="chats_container">
       {Object.entries(chats)
-        ?.sort((a, b) => b[1].date - a[1].date)
+        ?.sort((a, b) => filterChatActive ? a[1].date - b[1].date : b[1].date - a[1].date)
         .map((chat) => (
           <Chat key={chat[0]} chat={chat} />
         ))}

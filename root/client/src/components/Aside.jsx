@@ -1,10 +1,12 @@
-import { signOut } from "firebase/auth";
-import { useContext, useState } from "react";
+import { signOut, updateProfile } from "firebase/auth";
+import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { useContext, useEffect, useRef, useState } from "react";
+import ContentEditable from "react-contenteditable";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import Chats from "./Chats";
 import Navbar from "./Navbar";
 import NewGroup from "./NewGroup";
@@ -15,9 +17,137 @@ export default function Aside() {
     const navigate = useNavigate();
     const {currentUser} = useContext(AuthContext);
     const [groupSearchResults, setGroupSearchResults] = useState([]);
+    
     const [groupMenuActive, setGroupMenuActive] = useState(false);
     const [groupSettingsActive, setGroupSettingsActive] = useState(false);
     const {setActive, setChats} = useContext(ChatContext);
+
+    const [profileSettingsIsActive, setProfileSettingsIsActive] = useState(false);
+
+    const [isEditingDisplayName, setIsEditingDisplayName] = useState(false);
+    const [isEditingDesc, setIsEditingDesc] = useState(false);
+
+    const newDisplayNameRef = useRef("Loading...");
+
+    const [currentDesc, setCurrentDesc] = useState("");
+    const newDescRef = useRef("Loading...");
+
+    console.log(newDescRef.current)
+
+    useEffect(() => {
+        const unsub = async () => {
+            if(!currentUser) return;
+            
+            newDisplayNameRef.current = currentUser?.displayName;
+    
+            const q = query(collection(db, "users"), where("uid", "==", currentUser?.uid));
+            const querySnapshot = await getDocs(q);
+
+            let currentUserDesc = "";
+            querySnapshot.forEach(doc => {
+                currentUserDesc = doc.data()?.desc || "I am using Whatsapp Clone!";
+            })
+
+            setCurrentDesc(currentUserDesc);
+            newDescRef.current = currentUserDesc;
+        }
+
+        unsub();
+    }, []) // get current displayName and desc as soon as app loads
+
+    useEffect(() => {
+        const unsub = async () => {
+            if(!currentUser || newDisplayNameRef.current === currentUser.displayName) return;
+            
+            const currDisplayName = currentUser.displayName;
+            const newDisplayName = newDisplayNameRef.current;
+            try {
+              // update all chats where there is the currentUser
+              const userChatsRef = collection(db, "userChats");
+              const querySnapshot = await getDocs(userChatsRef);
+
+              const filteredChats = [];
+              querySnapshot.forEach((doc) => {
+                const chatData = Object.entries(doc.data());
+                chatData.forEach((chat) => {
+                  if (chat[1]?.type === "group" && chat[1]?.groupUsers.find(user => user.uid === currDisplayName)) {
+                    return; // TODO handle group type chat when changing name
+                  };
+                  if (chat[1].userInfo.displayName === currDisplayName)
+                    filteredChats.push(chat);
+                });
+              });
+
+              filteredChats.forEach(async (chat) => {
+                const chatId = chat[0];
+                const chatCreatorUid = chat[1].chattingWith.uid;
+
+                const updatedUserInfo = {
+                    ...chat[1].userInfo,
+                    displayName: newDisplayName
+                }
+
+                await updateDoc(doc(db, "userChats", chatCreatorUid), {
+                  [chatId + ".userInfo"]: updatedUserInfo
+                });
+              });
+
+              // update displayname for currentUser instance
+              await updateProfile(currentUser, {
+                displayName: newDisplayName,
+              });
+
+              // update displayname in firestore
+              const currentUserRef = doc(db, "users", currentUser.uid);
+              await updateDoc(currentUserRef, {
+                displayName: newDisplayName,
+                usernameToLowerCase: newDisplayName.toLowerCase(),
+              });
+
+              toast.success("Successfully changed your name");
+            } catch(error) {
+                console.error(error);
+                toast.error("Somthing went wrong, please try again.");
+            }
+        }
+
+        return () => unsub();
+    }, [newDisplayNameRef.current]) // changes displayName when displayName ref value changes
+
+    useEffect(() => {
+        const unsub = async () => {
+          if(!currentUser || newDescRef.current === currentDesc || currentDesc === "") return;
+          
+          const newDesc = newDescRef.current;
+          try {
+            // update displayname in firestore
+
+            const currentUserRef = doc(db, "users", currentUser.uid);
+            await updateDoc(currentUserRef, {
+              desc: newDesc,
+            });
+
+            toast.success("Successfully changed your infos");
+          } catch (error) {
+            console.error(error);
+            toast.error("Somthing went wrong, please try again.");
+          }
+        }
+
+        return () => unsub();
+    }, [newDescRef.current]) // changes displayName when desc ref value changes
+    
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+      }
+    };
+
+    const handleExitProfileSettings = () => {
+        setProfileSettingsIsActive(false);
+        setIsEditingDisplayName(false);
+        newDisplayNameRef.current= currentUser.displayName;
+    }
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -38,7 +168,7 @@ export default function Aside() {
             
             <header className="d-f">
                 <div className='img-container d-f'>
-                    <img className="pfp" src={currentUser.photoURL} alt="pfp" />
+                    <img className="pfp" src={currentUser.photoURL} alt="pfp" onClick={()=> setProfileSettingsIsActive(true)} />
                     <button type="button" onClick={handleLogout}>logout</button>
                 </div>
                 <div className="links d-f">
@@ -52,6 +182,77 @@ export default function Aside() {
                 <Navbar />
                 <Chats />
             </article>
+
+            {profileSettingsIsActive && (
+                <div className="profile_settings">
+                    <header className="d-f">
+                        <svg onClick={handleExitProfileSettings} viewBox="0 0 24 24" height="24" width="24"><path fill="currentColor" d="M12,4l1.4,1.4L7.8,11H20v2H7.8l5.6,5.6L12,20l-8-8L12,4z"></path></svg>
+                        <h1>Profile</h1>
+                    </header>
+                    <main>
+                        <div className="img-container">
+                            <img src={currentUser.photoURL} alt={currentUser.displayName} width="200px" height="200px" />
+                        </div>
+                        <div className="user_infos">
+                            <div className="user_tab">
+                                <h2>Your Name</h2>
+                                <div>
+                                    <div className={`input_container d-f ${isEditingDisplayName ? "editing" : ""}`}>
+                                        <ContentEditable 
+                                            suppressContentEditableWarning
+                                            html={newDisplayNameRef.current} 
+                                            onBlur={(event) => {
+                                                if(newDisplayNameRef.current === "") newDisplayNameRef.current = event.target.value = currentUser.displayName;
+                                                setIsEditingDisplayName(false)}
+                                            }
+                                            onFocus={(event) => {
+                                                event.target.value = "";
+                                                setIsEditingDisplayName(true)
+                                            }} 
+                                            onChange={(event) => {newDisplayNameRef.current = event.target.value.replace(/(<([^>]+)>)/gi, "").trim()}} // get rid of any html element and trim
+                                            onKeyDown={handleKeyPress}
+                                            spellCheck={false}
+                                            className="username_input" 
+                                        />
+                                        {isEditingDisplayName 
+                                            ? <svg viewBox="0 0 24 24" height="24" width="24"><path fill="currentColor" d="M9,17.2l-4-4l-1.4,1.3L9,19.9L20.4,8.5L19,7.1L9,17.2z"></path></svg>
+                                            : <svg viewBox="0 0 24 24" height="24" width="24"><path fill="currentColor" d="M3.95,16.7v3.4h3.4l9.8-9.9l-3.4-3.4L3.95,16.7z M19.75,7.6c0.4-0.4,0.4-0.9,0-1.3 l-2.1-2.1c-0.4-0.4-0.9-0.4-1.3,0l-1.6,1.6l3.4,3.4L19.75,7.6z"></path></svg>
+                                        }
+                                    </div>
+                                    <p>This is username and will be visible to everyone wants to chat with you, click to change.</p>
+                                </div>
+                            </div>
+
+                            <div className="user_tab">
+                                <h2>Your Infos</h2>
+                                <div>
+                                    <div className={`input_container d-f ${isEditingDesc ? "editing" : ""}`}>
+                                        <ContentEditable
+                                            suppressContentEditableWarning
+                                            html={newDescRef.current}
+                                            onBlur={(event) => {
+                                                if(newDescRef.current === "") newDescRef.current = event.target.value = "I am using Whatsapp Clone!";
+                                                setIsEditingDesc(false)
+                                            }}
+                                            onFocus={() => setIsEditingDesc(true)} 
+                                            onChange={(event) => newDescRef.current = event.target.value.replace(/(<([^>]+)>)/gi, "").trim()} // get rid of any html element and trim
+                                            onKeyDown={handleKeyPress}
+                                            spellCheck={false}
+                                            className="username_input" 
+                                        />
+                                        
+                                    {isEditingDesc 
+                                        ? <svg viewBox="0 0 24 24" height="24" width="24"><path fill="currentColor" d="M9,17.2l-4-4l-1.4,1.3L9,19.9L20.4,8.5L19,7.1L9,17.2z"></path></svg>
+                                        : <svg viewBox="0 0 24 24" height="24" width="24"><path fill="currentColor" d="M3.95,16.7v3.4h3.4l9.8-9.9l-3.4-3.4L3.95,16.7z M19.75,7.6c0.4-0.4,0.4-0.9,0-1.3 l-2.1-2.1c-0.4-0.4-0.9-0.4-1.3,0l-1.6,1.6l3.4,3.4L19.75,7.6z"></path></svg>
+                                    }
+                                    </div>
+                                </div>
+                                <p>This is all the infos about you.</p>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            )}
         </aside>
     )
 };

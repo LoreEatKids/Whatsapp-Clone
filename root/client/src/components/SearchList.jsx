@@ -57,6 +57,9 @@ export default function SearchList({
             displayName: user.displayName,
             photoURL: user.photoURL,
           },
+          [combinedId + ".chattingWith"]: {
+            uid: currentUser.uid,
+          },
           [combinedId + ".date"]: serverTimestamp(),
         });
 
@@ -65,6 +68,9 @@ export default function SearchList({
             uid: currentUser.uid,
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
+          },
+          [combinedId + ".chattingWith"]: {
+            uid: user.uid
           },
           [combinedId + ".date"]: serverTimestamp(),
         });

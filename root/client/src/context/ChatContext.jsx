@@ -23,6 +23,7 @@ export const ChatContextProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [userInfosMenuActive, setUseInfosMenuActive] = useState(false);
   const [userInfosMediaMenuActive, setUserInfosMediaMenuActive] = useState(false);
+  const [filterChatActive, setFilterChatActive] = useState(false);
 
   const handleDeleteChat = async (selectedChat) => {
     const selectedChatId = selectedChat[0];
@@ -42,7 +43,6 @@ export const ChatContextProvider = ({ children }) => {
     } catch (error) {
       console.error(error);
       toast.error("Something Went Wrong");
-      throw new Error("Something Went Wrong");
     }
   };
 
@@ -71,7 +71,8 @@ export const ChatContextProvider = ({ children }) => {
         chats, setChats,
         handleDeleteChat,
         userInfosMenuActive, setUseInfosMenuActive,
-        userInfosMediaMenuActive, setUserInfosMediaMenuActive
+        userInfosMediaMenuActive, setUserInfosMediaMenuActive,
+        filterChatActive, setFilterChatActive
       }}>
       {children}
     </ChatContext.Provider>
