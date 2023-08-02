@@ -46,8 +46,25 @@ ul li { list-style: none; }
         }
     }
 
+    .user_infos {
+        margin-top: 65px;
+        border-top: 8px solid #0c1317;
+        padding: 20px 27px;
+        line-height: 22px;
+
+        h1 {
+            font-size: 15px;
+            color: #8696a0;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #e9edef;
+        }
+    }
+
     .user_messages {
-        margin-top: 25px;
         padding: 20px 27px;
         border-top: 8px solid $user-info-divider;
         border-bottom: 8px solid $user-info-divider;

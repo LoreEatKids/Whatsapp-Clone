@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
-import { MEDIA_PREVIEW_IMG_NUMBER, containsLink } from "../utilities/const";
+import { MEDIA_PREVIEW_IMG_NUMBER, containsLink, getUserFromFirestore } from "../utilities/const";
 import "./styles/userinfos.scss";
 
 export default function Userinfos({ user }) {
@@ -19,6 +19,9 @@ export default function Userinfos({ user }) {
   const [totalMessages, setTotalMessages] = useState([]);
   const [totalMedias, setTotalMedias] = useState([]);
   const [activeTab, setActiveTab] = useState("Medias");
+
+  const [userDesc, setUserDesc] = useState("Loading...");
+  console.log(userDesc)
   
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -36,9 +39,18 @@ export default function Userinfos({ user }) {
     setUserInfosMediaMenuActive(false);
     setActiveTab("Medias");
   }
+  
+  useEffect(() => {
+    const unsub = async () => {
+      const userFromFirestore = await getUserFromFirestore(user);
+      setUserDesc(userFromFirestore.desc);
+    }
+
+    unsub();
+  }, []) // get user desc from firestore
 
   useEffect(() => {
-    const unSub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
+    const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
       if(!doc.exists()) return;
       const messages = doc.data().messages;
       setTotalMessages(messages);
@@ -46,8 +58,10 @@ export default function Userinfos({ user }) {
       setTotalMedias(filteredArray);
     });
 
-    return () => unSub();
-  }, []) // get data from firebase
+    return () => {
+      unsub();
+    }
+  }, []) // get data messages from firebase
 
   const handleViewImg = () => {}
 
@@ -121,6 +135,11 @@ export default function Userinfos({ user }) {
 
       <div className="user_username flex">
         <h1>{user.displayName}</h1>
+      </div>
+
+      <div className="user_infos">
+        <h1>Infos</h1>
+        <p>{userDesc}</p>
       </div>
 
       <div className="user_messages">

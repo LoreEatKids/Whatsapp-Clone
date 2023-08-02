@@ -103,8 +103,7 @@ export default function SearchList({
   return (
     <main className={`searchlist ${active}`}>
       <ul>
-        {loading && <Preloader />}
-        {!loading && users}
+        {!loading ? users : <Preloader />}
       </ul>
     </main>
   );

@@ -54,6 +54,7 @@ export default function SignupForm() {
             await setDoc(doc(db, "users", res.user.uid), {
               uid: res.user.uid,
               displayName: username,
+              desc: "I am using Whatsapp Clone!",
               email,
               photoURL: downloadURL,
               status: "online",
