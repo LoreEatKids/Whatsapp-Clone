@@ -302,8 +302,9 @@ export default function Aside() {
                         if(!isUnique) {
                             event.target.value = currentUser.displayName;
                             newDisplayNameRef.current = currentUser.displayName;
-                            toast.error("This Display Name is already taken, please choose another one. ");
+                            toast.error("This Display Name is already taken, please choose another one.");
                         }
+
                         setIsEditingDisplayName(false);
                       }}
                       onFocus={(event) => {

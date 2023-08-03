@@ -74,6 +74,7 @@ export default function NewGroupSettings(props) {
                     groupName: groupName,
                     groupUsers: groupUsers,
                     groupImg: downloadUrl, // Assegna l'URL dell'immagine al campo groupImg
+                    groupDesc: "This is Whatsapp Clone group!",
                     date: serverTimestamp(),
                   },
                 },
@@ -100,7 +101,8 @@ export default function NewGroupSettings(props) {
                   type: "group",
                   groupName: groupName,
                   groupUsers: groupUsers,
-                  groupImg: null, // Assegna null al campo groupImg
+                  groupImg: null,
+                  groupDesc: "This is Whatsapp Clone group!",
                   date: serverTimestamp(),
                 },
               },

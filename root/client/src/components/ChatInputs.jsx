@@ -99,6 +99,7 @@ export default function ChatInputs() {
             await updateDoc(doc(db, "userChats", user.uid), {
             [data.chatId + ".lastMessage"]: {
               text: lastMesssge,
+              sender: currentUser.displayName,
             },
             [data.chatId + ".date"]: serverTimestamp(),
           });

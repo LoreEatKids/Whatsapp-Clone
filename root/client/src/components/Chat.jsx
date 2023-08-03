@@ -130,12 +130,8 @@ export default function Chat({ chat }) {
               )}
             </div>
           )}
-          <p
-            className={`${
-              chat[1].lastMessage?.text === "Photo" ? "photo" : ""
-            }`}
-          >
-            {chat[1].lastMessage?.text}
+          <p className={`${chat[1].lastMessage?.text === "Photo" ? "photo" : ""}`}>
+            {chat[1].type !== "group" ? chat[1].lastMessage?.text: chat[1].lastMessage?.sender + ": " + chat[1].lastMessage?.text}
           </p>
         </div>
 

@@ -23,7 +23,9 @@ export const ChatContextProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [userInfosMenuActive, setUseInfosMenuActive] = useState(false);
   const [userInfosMediaMenuActive, setUserInfosMediaMenuActive] = useState(false);
+  const [groupInfosMenuActive, setGroupInfosMenuActive] = useState(false);
   const [filterChatActive, setFilterChatActive] = useState(false);
+  const [groupMembersEl, setGroupMemberEl] = useState([]);
 
   const handleDeleteChat = async (selectedChat) => {
     const selectedChatId = selectedChat[0];
@@ -72,7 +74,9 @@ export const ChatContextProvider = ({ children }) => {
         handleDeleteChat,
         userInfosMenuActive, setUseInfosMenuActive,
         userInfosMediaMenuActive, setUserInfosMediaMenuActive,
-        filterChatActive, setFilterChatActive
+        groupInfosMenuActive, setGroupInfosMenuActive,
+        filterChatActive, setFilterChatActive,
+        groupMembersEl, setGroupMemberEl,
       }}>
       {children}
     </ChatContext.Provider>

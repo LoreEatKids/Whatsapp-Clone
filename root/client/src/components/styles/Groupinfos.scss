@@ -1,0 +1,62 @@
+@import "../../styles/main";
+
+#group_infos_container {
+  max-height: 930px;
+  overflow: scroll;
+
+  .group_infos {
+    flex-direction: column;
+    margin-top: 15px;
+    h1 {
+      font-size: 20px;
+      color: $user-info-username-color;
+    }
+
+    p {
+      font-size: 16px;
+      color: #667781;
+      margin-top: 5px;
+    }
+  }
+
+  .group_members {
+    position: relative;
+    
+    &_count {
+        font-size: 15px;
+        color: #8696a0;
+        padding: 20px 27px;
+    }
+    
+    .group_member {
+      max-width: 100%;
+      overflow: scroll;
+      padding: 15px 27px;
+      cursor: pointer;
+
+      img {
+        height: 40px;
+        width: 40px;
+        border-radius: 9999px;
+        object-fit: cover;
+      }
+
+      &:hover {
+        background-color: $user-info-danger-zone-hover-color;
+      }
+
+      &_infos {
+        margin-left: 17px;
+        h1 {
+          font-size: 16px;
+          color: #e9e9e9;
+        }
+
+        p {
+          font-size: 14px;
+          color: #8696a0;
+        }
+      }
+    }
+  }
+}

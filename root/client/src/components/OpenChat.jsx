@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
+import Groupinfos from "./Groupinfos";
 import Messages from "./Messages";
 import NoOpenChat from "./NoOpenChat";
 import Userinfos from "./Userinfos";
@@ -11,9 +12,10 @@ export default function Chat() {
       data,
       setImgModalVisible,
       setImg,
-      userInfosMenuActive,
-      setUseInfosMenuActive,
-      setUserInfosMediaMenuActive,
+      
+      userInfosMenuActive, setUseInfosMenuActive, setUserInfosMediaMenuActive,
+      groupInfosMenuActive, setGroupInfosMenuActive,
+      setGroupMemberEl
     } = useContext(ChatContext);
     const {currentUser} = useContext(AuthContext);
     
@@ -26,6 +28,16 @@ export default function Chat() {
 
     const chatDataLenght = Object.entries(data.user)?.length;
     const groupDataLenght = Object.entries(data.group)?.length;
+    
+    useEffect(() => {
+      const unsub = () => {
+        setUserInfosMediaMenuActive(false);
+        setGroupInfosMenuActive(false);
+        setGroupMemberEl([]);
+      }
+
+      return () => unsub();
+  }, [data.chatId])
 
     useEffect(() => {
       setShowContactInfo(true);
@@ -80,6 +92,9 @@ export default function Chat() {
     const handleToggleUserInfos = () => {
       setUseInfosMenuActive(true);
     }
+    const handleToggleGroupInfos = () => {
+      setGroupInfosMenuActive(true);
+    }
     
     return (
       <>
@@ -108,7 +123,7 @@ export default function Chat() {
               )}
 
               {groupDataLenght !== 0 && (
-                <div className="pfp_container d-f">
+                <div className="pfp_container d-f" onClick={handleToggleGroupInfos}>
                   {data.group.groupImg ? (
                     <img className="pfp" src={data.group.groupImg} alt="pfp" />
                   ) : (
@@ -175,6 +190,7 @@ export default function Chat() {
         </main>
 
         {userInfosMenuActive && <Userinfos user={data.user} setUseInfosMenuActive={setUseInfosMenuActive} />}
+        {groupInfosMenuActive && <Groupinfos group={data.group} setGroupInfosMenuActive={setGroupInfosMenuActive} />}
       </>
     );
 };
