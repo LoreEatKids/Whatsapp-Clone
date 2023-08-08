@@ -24,29 +24,20 @@ export default function App() {
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/">
-          <Route
-            index
-            element={
+          <Route index element={
               <ProtectedRoute>
                 <Home />
-              </ProtectedRoute>
-            }
+              </ProtectedRoute>}
           />
-          <Route
-            path="login"
-            element={
+          <Route path="login" element={
               <PrivateRoute>
                 <Login />
-              </PrivateRoute>
-            }
+              </PrivateRoute>}
           />
-          <Route
-            path="register"
-            element={
+          <Route path="register" element={
               <PrivateRoute>
                 <Register />
-              </PrivateRoute>
-            }
+              </PrivateRoute>}
           />
         </Route>
       </Routes>

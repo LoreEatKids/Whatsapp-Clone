@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
+import { ImgViewerContext } from "../context/ImgViewer";
 import { auth, db } from "../firebase";
 import { getUserFromFirestore, isDisplayNameUnique } from "../utilities/const";
 import Chats from "./Chats";
@@ -17,6 +18,8 @@ import "./styles/aside.scss";
 export default function Aside() {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
+  const { setImgInfos, setImgViewerIsActive } = useContext(ImgViewerContext);
+
   const [groupSearchResults, setGroupSearchResults] = useState([]);
 
   const [groupMenuActive, setGroupMenuActive] = useState(false);
@@ -32,6 +35,17 @@ export default function Aside() {
   const [currentDesc, setCurrentDesc] = useState("");
   const newDescRef = useRef("Loading..."); // library ref
   const newDisplayNameRef = useRef("Loading..."); // library ref
+  
+  const handleViewUserImg = () => {
+    setImgInfos({
+      user: { 
+        photoURL: currentUser.photoURL,
+        displayName: currentUser.displayName,
+      },
+      img: { url: currentUser.photoURL }
+    })
+    setImgViewerIsActive(true);
+  }
 
   useEffect(() => {
     const unsub = async () => {
@@ -279,6 +293,7 @@ export default function Aside() {
               <img
                 src={currentUser.photoURL}
                 alt={currentUser.displayName}
+                onClick={handleViewUserImg}
                 width="200px"
                 height="200px"
               />

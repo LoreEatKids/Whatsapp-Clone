@@ -52,6 +52,8 @@ export default function NewGroupSettings(props) {
       });
 
       if (!res.exists()) {
+        const groupCombinedIds = getGroupCombinedIds(groupUsers);
+        
         await setDoc(doc(db, "chats", combinedId), {
           type: "group",
           messages: [],
@@ -71,6 +73,7 @@ export default function NewGroupSettings(props) {
                 {
                   [combinedId]: {
                     type: "group",
+                    groupId: groupCombinedIds,
                     groupName: groupName,
                     groupUsers: groupUsers,
                     groupImg: downloadUrl, // Assegna l'URL dell'immagine al campo groupImg
@@ -100,6 +103,7 @@ export default function NewGroupSettings(props) {
                 [combinedId]: {
                   type: "group",
                   groupName: groupName,
+                  groupId: groupCombinedIds,
                   groupUsers: groupUsers,
                   groupImg: null,
                   groupDesc: "This is Whatsapp Clone group!",

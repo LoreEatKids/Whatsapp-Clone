@@ -7,7 +7,7 @@ import { db } from "../firebase";
 
 export default function Chat({ chat }) {
   const [userStatus, setUserStatus] = useState("");
-  const { dispatch, data, handleDeleteChat } = useContext(ChatContext);
+  const { dispatch, data, handleDeleteChat, handleDeleteGroup } = useContext(ChatContext);
 
   useEffect(() => {
     const getUserStatus = async () => {
@@ -51,11 +51,7 @@ export default function Chat({ chat }) {
   const handleGroupSelect = (group) => {
     dispatch({ type: "CHANGE_GROUP", payload: group });
   };
-
-  const handleDeleteGroup = async (selectedGroup) => {
-    console.log(selectedGroup);
-  };
-
+  
   const getDate = (date) => {
     const messageDate = date.toDate();
 
@@ -131,7 +127,7 @@ export default function Chat({ chat }) {
             </div>
           )}
           <p className={`${chat[1].lastMessage?.text === "Photo" ? "photo" : ""}`}>
-            {chat[1].type !== "group" ? chat[1].lastMessage?.text: chat[1].lastMessage?.sender + ": " + chat[1].lastMessage?.text}
+            {chat[1].type !== "group" ? chat[1].lastMessage?.text : chat[1].lastMessage ? chat[1].lastMessage.sender + ": " + chat[1].lastMessage.text : ""}
           </p>
         </div>
 

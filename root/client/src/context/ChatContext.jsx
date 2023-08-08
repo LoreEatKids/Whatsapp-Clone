@@ -16,16 +16,21 @@ export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
-  const [imgModalVisible, setImgModalVisible] = useState([false, ""]);
-  const [active, setActive] = useState(false);
+  const [imgModalVisible, setImgModalVisible] = useState([false, ""]); // is active and imgUrl to display
   const [selectedUsers, setSelectedUser] = useState([]);
+
   const [img, setImg] = useState(null);
   const [chats, setChats] = useState([]);
+  const [groupMembersEl, setGroupMemberEl] = useState([]);
+
+  const [active, setActive] = useState(false);
+
   const [userInfosMenuActive, setUseInfosMenuActive] = useState(false);
-  const [userInfosMediaMenuActive, setUserInfosMediaMenuActive] = useState(false);
+  const [userInfosMediaMenuActive, setUserInfosMediaMenuActive] =
+    useState(false);
+
   const [groupInfosMenuActive, setGroupInfosMenuActive] = useState(false);
   const [filterChatActive, setFilterChatActive] = useState(false);
-  const [groupMembersEl, setGroupMemberEl] = useState([]);
 
   const handleDeleteChat = async (selectedChat) => {
     const selectedChatId = selectedChat[0];
@@ -42,9 +47,70 @@ export const ChatContextProvider = ({ children }) => {
       });
 
       dispatch({ type: "RESET_CHAT" });
+      toast.success("Successfully deleted the chat");
     } catch (error) {
       console.error(error);
       toast.error("Something Went Wrong");
+    }
+  };
+
+  const handleDeleteGroup = async (group) => {
+    const [groupId, groupInfos] = group;
+    const groupUsersArr = groupInfos.groupUsers;
+    const updatedUsers = groupUsersArr.filter(
+      (user) => user.uid !== currentUser.uid
+    );
+
+    const currUserRef = doc(db, "userChats", currentUser.uid);
+    const groupChatRef = doc(db, "chats", groupId);
+
+    try {
+      if (groupUsersArr.length === 1) {
+        try {
+          await deleteDoc(groupChatRef);
+
+          const groupUserRef = doc(db, "userChats", groupUsersArr[0].uid);
+          await updateDoc(groupUserRef, {
+            [groupId]: deleteField(),
+          });
+        } catch (error) {
+          throw new Error(error);
+        }
+        
+        dispatch({ type: "RESET_CHAT" });
+        toast.success("Successfully left the group");
+        return;
+      }
+
+      groupUsersArr.forEach(async (user) => {
+        const userRef = doc(db, "userChats", user.uid);
+
+        if (user.uid === currentUser.uid) {
+          try {
+            await updateDoc(currUserRef, {
+              [groupId]: deleteField(),
+            });
+          } catch (error) {
+            throw new Error(error);
+          }
+
+          dispatch({ type: "RESET_CHAT" });
+          return;
+        }
+
+        try {
+          await updateDoc(userRef, {
+            [groupId + ".groupUsers"]: updatedUsers,
+          });
+
+          dispatch({ type: "RESET_CHAT" });
+        } catch (error) {
+          throw new Error(error);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong, please try again.");
     }
   };
 
@@ -70,14 +136,22 @@ export const ChatContextProvider = ({ children }) => {
         setActive,
         selectedUsers,
         setSelectedUser,
-        chats, setChats,
+        chats,
+        setChats,
         handleDeleteChat,
-        userInfosMenuActive, setUseInfosMenuActive,
-        userInfosMediaMenuActive, setUserInfosMediaMenuActive,
-        groupInfosMenuActive, setGroupInfosMenuActive,
-        filterChatActive, setFilterChatActive,
-        groupMembersEl, setGroupMemberEl,
-      }}>
+        handleDeleteGroup,
+        userInfosMenuActive,
+        setUseInfosMenuActive,
+        userInfosMediaMenuActive,
+        setUserInfosMediaMenuActive,
+        groupInfosMenuActive,
+        setGroupInfosMenuActive,
+        filterChatActive,
+        setFilterChatActive,
+        groupMembersEl,
+        setGroupMemberEl,
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

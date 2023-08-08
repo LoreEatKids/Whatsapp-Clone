@@ -34,3 +34,9 @@ export async function isDisplayNameUnique(newDisplayName) {
     throw error; // Rilancia l'errore per gestirlo in un punto superiore
   }
 }
+
+export const getGroupCombinedIds = (users) => {
+  const userIds = users.map((user) => user.uid);
+  const combinedId = userIds.sort().join("");
+  return combinedId;
+};

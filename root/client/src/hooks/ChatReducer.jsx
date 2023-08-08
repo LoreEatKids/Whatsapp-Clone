@@ -6,12 +6,6 @@ export const INITIAL_STATE = {
   group: {},
 };
 
-const getGroupCombinedIds = (users) => {
-  const userIds = users.map((user) => user.uid);
-  const combinedId = userIds.sort().join("");
-  return combinedId;
-};
-
 export const chatReducer = (state, action, currentUser) => {
   switch (action.type) {
     case ACTION_TYPES.CHANGE_USER:
@@ -27,7 +21,7 @@ export const chatReducer = (state, action, currentUser) => {
       return {
         user: {},
         group: action.payload,
-        chatId: getGroupCombinedIds([...action.payload.groupUsers]),
+        chatId: action.payload.groupId,
       };
     case ACTION_TYPES.RESET_CHAT:
       return INITIAL_STATE;

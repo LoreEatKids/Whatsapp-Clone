@@ -2,6 +2,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
+import { ImgViewerContext } from "../context/ImgViewer";
 import { db } from "../firebase";
 import { MEDIA_PREVIEW_IMG_NUMBER, containsLink, getUserFromFirestore } from "../utilities/const";
 import "./styles/userinfos.scss";
@@ -15,26 +16,28 @@ export default function Userinfos({ user }) {
     userInfosMediaMenuActive,
     setUserInfosMediaMenuActive,
   } = useContext(ChatContext);
+  
+  const { setImgInfos, setImgViewerIsActive } = useContext(ImgViewerContext);
+
   const { currentUser } = useContext(AuthContext);
   const [totalMessages, setTotalMessages] = useState([]);
   const [totalMedias, setTotalMedias] = useState([]);
   const [activeTab, setActiveTab] = useState("Medias");
 
   const [userDesc, setUserDesc] = useState("Loading...");
-  console.log(userDesc)
   
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
+
   const handleCloseUserInfos = () => {
     setUseInfosMenuActive(false);
   }
-  const handleViewMedias = () => {
-    console.log(totalMedias);
-  }
+
   const handleActiveMediasMenu = () => {
     setUserInfosMediaMenuActive(true);
   }
+  
   const handleCloseMediasMenu = () => {
     setUserInfosMediaMenuActive(false);
     setActiveTab("Medias");
@@ -63,10 +66,30 @@ export default function Userinfos({ user }) {
     }
   }, []) // get data messages from firebase
 
-  const handleViewImg = () => {}
+  const handleViewImg = (imgUrl) => {
+    const user = {
+      photoURL: data.user.photoURL,
+      displayName: data.user.displayName,
+    };
+
+    if (imgUrl !== user.photoURL) {
+      setImgInfos({
+        user,
+        img: { url: imgUrl },
+        prevImgs: totalMedias.reverse(),
+      });
+    } else {
+      setImgInfos({
+        user,
+        img: { url: imgUrl },
+      });
+    }
+
+    setImgViewerIsActive(true);
+  };
 
   const mediasPreviewEl = totalMedias.slice(0, MEDIA_PREVIEW_IMG_NUMBER).map(media => (
-    <img src={media.img} alt={media?.text} key={media.id} />
+    <img src={media.img} alt={media?.text} key={media.id} onClick={() => handleViewImg(media.img)} />
   ))
 
   const mediasFilterEl = (mediaType) => {
@@ -74,7 +97,7 @@ export default function Userinfos({ user }) {
       case "Medias":
         return totalMedias.map((media) => (
           <li key={media.id}>
-            <img src={media.img} alt={media?.text} width="128" height="128" />
+            <img src={media.img} alt={media?.text} width="128" height="128" onClick={() => handleViewImg(media.img)} />
           </li>
         ))
       case "Links":
@@ -129,7 +152,7 @@ export default function Userinfos({ user }) {
         <img
           src={user.photoURL}
           alt={user.displayName}
-          onClick={handleViewImg}
+          onClick={() => handleViewImg(data.user.photoURL)}
         />
       </div>
 
@@ -143,10 +166,7 @@ export default function Userinfos({ user }) {
       </div>
 
       <div className="user_messages">
-        <div
-          className="user_messages_container medias d-f"
-          onClick={handleViewMedias}
-        >
+        <div className="user_messages_container medias d-f">
           <div className="medias_container">
             <div
               className="user_messages_container_svg d-f"
@@ -237,10 +257,11 @@ export default function Userinfos({ user }) {
           </article>
 
           <main>
-            {activeTab === "Medias" ? 
-              <ul>{mediasFilterEl(activeTab)}</ul> : 
+            {activeTab === "Medias" ? (
+              <ul>{mediasFilterEl(activeTab)}</ul>
+            ) : (
               mediasFilterEl(activeTab)
-            }
+            )}
           </main>
 
           {totalMedias.length === 0 && (

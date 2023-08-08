@@ -190,7 +190,7 @@ export default function Chat() {
         </main>
 
         {userInfosMenuActive && <Userinfos user={data.user} setUseInfosMenuActive={setUseInfosMenuActive} />}
-        {groupInfosMenuActive && <Groupinfos group={data.group} setGroupInfosMenuActive={setGroupInfosMenuActive} />}
+        {groupInfosMenuActive && groupDataLenght > 0 && <Groupinfos group={data.group} setGroupInfosMenuActive={setGroupInfosMenuActive} />}
       </>
     );
 };

@@ -4,7 +4,14 @@ import "./styles/contextmenu.scss";
 
 export default function ContextMenu({ pos, onClose }) {
   const ref = useRef();
-  const { dispatch, setUseInfosMenuActive } = useContext(ChatContext);
+  const { dispatch, data, chats, setUseInfosMenuActive, userInfosMenuActive, setGroupInfosMenuActive, groupInfosMenuActive, handleDeleteGroup} = useContext(ChatContext);
+
+  const chatDataLenght = Object.entries(data.user)?.length;
+  const groupDataLenght = Object.entries(data.group)?.length;
+
+  const handleDeleteGroupEvent = async () => {
+    await handleDeleteGroup(Object.entries(chats).find((chat) => chat[0] === data.chatId));
+  }
 
   useEffect(() => {
     const setContextMenuPos = () => {
@@ -46,16 +53,21 @@ export default function ContextMenu({ pos, onClose }) {
     onClose();
   }
   const handleActiveUserInfos = () => {
-    setUseInfosMenuActive(true);
+    !userInfosMenuActive && setUseInfosMenuActive(true);
+    onClose();
+  }
+
+  const handleActiveGroupInfos = () => {
+    !groupInfosMenuActive && setGroupInfosMenuActive(true);
     onClose();
   }
 
   return (
     <div className="contextmenu" ref={ref}>
       <ul>
-        <li onClick={handleActiveUserInfos}>Contact's Infos</li>
+        <li onClick={groupDataLenght > 0 ? handleActiveGroupInfos : handleActiveUserInfos}>Contact's Infos</li>
         <li onClick={handleCloseChat}>Close conversation</li>
-        <li>Block user</li>
+        {groupDataLenght > 0 ? <li onClick={handleDeleteGroupEvent}>Exit Group</li> : <li>Block user</li>}
       </ul>
     </div>
   );
